@@ -145,3 +145,5 @@ alias v='nvim'
 
 
 neofetch
+export XDG_CONFIG_HOME="$HOME/.dotfiles"
+export XDG_CONFIG_HOME="$HOME/.dotfiles/.config"
