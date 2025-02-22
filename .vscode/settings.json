@@ -1,0 +1,177 @@
+{
+
+    /**------- Workbench Settings -------**/
+    "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
+    "workbench.colorTheme": "GitHub Dark Default",
+    "workbench.productIconTheme": "fluent-icons",
+    "workbench.tree.indent": 16,
+    "workbench.startupEditor": "none",
+    "workbench.tips.enabled": false,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.showTabs": "single",
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "workbench.editor.editorActionsLocation": "titleBar",
+    "workbench.editor.empty.hint": "hidden",
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.db": "sqlite-viewer.view"
+    },
+    "workbench.colorCustomizations": {
+        "inlineparameters.annotationBackground": "#282A3600",
+        "inlineparameters.annotationForeground": "#7b82af",
+        "scrollbar.shadow": "#24292e00"
+    },
+
+
+
+    /**-------- BreadCrumbs Configurations -------**/
+    "breadcrumbs.enabled": false,
+    "breadcrumbs.filePath": "on",
+    "breadcrumbs.symbolPath": "off",
+
+
+
+    /**------- Editor Settings ------**/
+    "editor.fontFamily": "'Hack Nerd Font' , Jetbrains Mono, 'Droid Sans Mono', 'monospace', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 16,
+    "editor.fontWeight": "450",
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.maxColumn": 50,
+    "editor.minimap.scale": 2,
+    "editor.lineNumbers": "on",
+    "editor.folding": true,
+    "editor.glyphMargin": true,
+    "editor.guides.indentation": true,
+    "editor.scrollbar.horizontal": "hidden",
+    "editor.cursorBlinking": "expand",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorStyle": "underline",
+    "editor.suggest.showStatusBar": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.smoothScrolling": true,
+    "editor.mouseWheelZoom": true,
+    "editor.copyWithSyntaxHighlighting": false,
+    "editor.emptySelectionClipboard": false,
+    "editor.renderControlCharacters": false,
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.gotoLocation.multipleReferences": "goto",
+    "editor.gotoLocation.multipleDefinitions": "goto",
+    "editor.gotoLocation.multipleDeclarations": "goto",
+    "editor.gotoLocation.multipleImplementations": "goto",
+    "editor.gotoLocation.multipleTypeDefinitions": "goto",
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.snippetSuggestions": "top",
+    "editor.detectIndentation": false,
+    "editor.lightbulb.enabled": "off",
+    "editor.selectionHighlight": false,
+    "editor.overviewRulerBorder": false,
+    "editor.renderLineHighlight": "none",
+    "editor.occurrencesHighlight": "off",
+    "editor.hover.delay": 1000,
+    "editor.hover.enabled": true,
+    "editor.matchBrackets": "never",
+    "editor.colorDecorators": false,
+    "editor.wordWrap": "on",
+
+
+
+    /**----- Terminal Configurations ------**/
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.lineHeight": 1.5,
+    "terminal.integrated.fontFamily": "'Hack Nerd Font' , Jetbrains Mono, 'Droid Sans Mono', 'monospace', monospace",
+
+
+
+    /**----- Window Configuration -----**/
+    "window.newWindowDimensions": "inherit",
+    "window.customTitleBarVisibility": "windowed",
+    "window.titleBarStyle": "custom",
+    "window.menuBarVisibility": "compact",
+
+
+
+    /**----- Files Configurations -----**/
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 500,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+
+
+
+    /**----- Git Settings -----**/
+    "git.openRepositoryInParentFolders": "never",
+    "git.enableSmartCommit": true,
+    "git.decorations.enabled": false,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+
+
+
+    "vsicons.dontShowNewVersionMessage": true,
+    "explorer.confirmDelete": false,
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+
+    "database-client.autoSync": true,
+    "explorer.fileNesting.patterns": {
+        "*.ts": "${capture}.js",
+        "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+        "*.jsx": "${capture}.js",
+        "*.tsx": "${capture}.ts",
+        "tsconfig.json": "tsconfig.*.json",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
+        "*.sqlite": "${capture}.${extname}-*",
+        "*.db": "${capture}.${extname}-*",
+        "*.sqlite3": "${capture}.${extname}-*",
+        "*.db3": "${capture}.${extname}-*",
+        "*.sdb": "${capture}.${extname}-*",
+        "*.s3db": "${capture}.${extname}-*"
+    },
+    "material-icon-theme.folders.theme": "classic",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+
+
+    /*******************************************************/
+    "diffEditor.ignoreTrimWhitespace": false,
+    "diffEditor.renderSideBySide": false,
+    "scm.diffDecorations": "none",
+    "problems.decorations.enabled": false,
+
+
+    // Typography
+    "search.useIgnoreFiles": false,
+    "search.exclude": {
+        // Hide everything in /vendor, except the "laravel" and "livewire" folder.
+        "**/vendor/{[^l],?[^ai]}*": true,
+        // Hide everything in /public, except "index.php"
+        "**/public/{[^i],?[^n]}*": true,
+        "**/node_modules": true,
+        "**/dist": true,
+        "**/_ide_helper.php": true,
+        "**/composer.lock": true,
+        "**/package-lock.json": true,
+        "storage": true,
+        ".phpunit.result.cache": true
+    },
+
+
+    /**----- Aditional Configs -----**/
+    "vscode_custom_css.imports": [
+        "file:///home/duarte/.dotfiles/.vscode/custom-vscode.css",
+        "file:///home/duarte/.dotfiles/.vscode/vscode-script.js",
+    ],
+
+
+}
