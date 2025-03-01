@@ -2,7 +2,7 @@
 
     /**------- Workbench Settings -------**/
     "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
-    "workbench.colorTheme": "GitHub Dark Default",
+    "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
     "workbench.productIconTheme": "fluent-icons",
     "workbench.tree.indent": 16,
     "workbench.startupEditor": "none",
@@ -21,11 +21,6 @@
         "inlineparameters.annotationForeground": "#7b82af",
         "scrollbar.shadow": "#24292e00"
     },
-
-
-
-    /**-------- BreadCrumbs Configurations -------**/
-    "breadcrumbs.enabled": false,
     "breadcrumbs.filePath": "on",
     "breadcrumbs.symbolPath": "off",
 
@@ -171,6 +166,8 @@
     "vscode_custom_css.imports": [
         "file:///home/duarte/.dotfiles/.vscode/custom-vscode.css",
         "file:///home/duarte/.dotfiles/.vscode/vscode-script.js",
+        "file:///C:/Users/duart/Documents/VSCODE/custom-vscode.css",
+        "file:///C:/Users/duart/Documents/VSCODE/vscode-script.js"
     ],
 
 
