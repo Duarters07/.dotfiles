@@ -112,8 +112,15 @@ require('lazy').setup({
     },
 
 
+    -- gitsigns
     {
         'git@github.com:lewis6991/gitsigns.nvim.git',
+    },
+
+    
+    -- Toggleterm
+    {
+        'akinsho/toggleterm.nvim',
     },
 })
 
