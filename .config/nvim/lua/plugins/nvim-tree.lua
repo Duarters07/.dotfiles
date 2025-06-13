@@ -33,7 +33,7 @@ require("nvim-tree").setup({
     },
 
     filters = {
-        dotfiles = true,            -- Exibe arquivos ocultos
+        dotfiles = false,            -- false para exibir arquivos ocultos
     },
 
     git = {
