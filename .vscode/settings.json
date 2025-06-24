@@ -1,8 +1,8 @@
 {
 
     /**------- Workbench Settings -------**/
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "One Dark Pro Darker",
+    "workbench.iconTheme": "symbols",
+    "workbench.colorTheme": "Vesper",
     "workbench.productIconTheme": "fluent-icons",
     "workbench.tree.indent": 16,
     "workbench.startupEditor": "none",

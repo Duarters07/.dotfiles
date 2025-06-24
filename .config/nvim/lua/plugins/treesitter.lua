@@ -2,7 +2,7 @@ local ts_configs = require("nvim-treesitter.configs")
 
 ts_configs.setup({
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+    ensure_installed = { "java", "c", "cpp", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,

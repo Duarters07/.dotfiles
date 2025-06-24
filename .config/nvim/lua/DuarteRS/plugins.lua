@@ -28,6 +28,7 @@ require('lazy').setup({
         'bluz71/vim-nightfly-colors',
 	    'catppuccin/nvim',
         'rebelot/kanagawa.nvim',
+        'datsfilipe/vesper.nvim',
     },
 
     -- Telescope
@@ -121,6 +122,14 @@ require('lazy').setup({
     -- Toggleterm
     {
         'akinsho/toggleterm.nvim',
+    },
+
+
+    -- Notify
+    {
+        'rcarriga/nvim-notify',
+        lazy = false, -- garante que o plugin é carregado imediatamente
+        priority = 1000, -- opcional, para garantir que vem cedo
     },
 })
 
