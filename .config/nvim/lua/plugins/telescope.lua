@@ -19,16 +19,7 @@ telescope.setup({
 })
 
 -- Atalhos com suporte a ficheiros ocultos e exclusão de .git
-vim.keymap.set('n', '<leader>ff', function()
-  builtin.find_files({
-    hidden = true,
-    find_command = {
-      'fd', '--type', 'f',
-      '--hidden',
-      '--exclude', '.git'
-    }
-  })
-end, { desc = '[F]ind [F]iles (incl. hidden, ignora .git)' })
+vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles (incl. hidden, ignora .git)' })
 
 vim.keymap.set('n', '<leader>fg', function()
   builtin.live_grep({ hidden = true })
