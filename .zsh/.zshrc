@@ -144,6 +144,8 @@ export ANTLR4_PATH="/usr/local/lib"
 alias clear='clear && neofetch'
 alias c='clear'
 alias v='nvim'
-
+alias ls='lsd'
+alias la='lsd -la'
+alias ll='lsd -l'
 
 neofetch
