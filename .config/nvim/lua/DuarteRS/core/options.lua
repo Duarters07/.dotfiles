@@ -26,7 +26,7 @@ local options = {
     numberwidth = 4,                        -- set number column width to 4
     wrap = true,                            -- display lines as one long line
     linebreak = true,                       -- companion to wrap, don't split words
-    colorcolumn = "100",                    -- Draws a line at the given line
+    -- colorcolumn = "100",                 -- Draws a line at the given line
 
 
     -- Tabs & Indentation

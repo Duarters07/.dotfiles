@@ -76,8 +76,9 @@ require('lazy').setup({
     -- LSP
     {
         'neovim/nvim-lspconfig',
-        {'williamboman/mason.nvim', config = true},
-        {'williamboman/mason-lspconfig.nvim', config = true},
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
+        'whoIsSethDaniel/mason-tool-installer.nvim',
     },
 
 
@@ -86,11 +87,12 @@ require('lazy').setup({
         'hrsh7th/nvim-cmp',
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
+        'L3MON4D3/LuaSnip',
         'saadparwaiz1/cmp_luasnip',
         'hrsh7th/cmp-nvim-lsp',
 	    'hrsh7th/cmp-nvim-lua',
-        'L3MON4D3/LuaSnip',
         'rafamadriz/friendly-snippets',
+        'onsails/lspkind.nvim',
     },
 
 
@@ -99,11 +101,13 @@ require('lazy').setup({
         'nvim-treesitter/nvim-treesitter',
         'HiPhish/rainbow-delimiters.nvim',
         'nvim-treesitter/nvim-treesitter-context',
+        'windwp/nvim-ts-autotag',
     },
 
     -- Trouble
     {
         'folke/trouble.nvim',
+        'folke/todo-comments.nvim',
     },
 
 
@@ -130,6 +134,38 @@ require('lazy').setup({
         'rcarriga/nvim-notify',
         lazy = false, -- garante que o plugin é carregado imediatamente
         priority = 1000, -- opcional, para garantir que vem cedo
+    },
+
+
+    -- Alpha
+    {
+        'goolord/alpha-nvim',
+        event = "VimEnter",
+    },
+
+    -- dressing
+    { 
+        "stevearc/dressing.nvim", 
+        event = "VeryLazy",
+    },
+
+
+
+    -- comments
+    {
+        'numToStr/Comment.nvim',
+        'JoosepAlviste/nvim-ts-context-commentstring',
+    },
+
+    -- surround
+    {
+        'kylechui/nvim-surround',
+        config = true,
+    },
+
+    -- formatting
+    {
+        'stevearc/conform.nvim'
     },
 })
 

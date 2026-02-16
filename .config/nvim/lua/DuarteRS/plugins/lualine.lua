@@ -5,8 +5,8 @@ require('lualine').setup {
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
         disabled_filetypes = {
-            statusline = {"NvimTree", "toggleterm", "Trouble"},
-            winbar = {"NvimTree", "toggleterm", "Trouble"},
+            --statusline = {"toggleterm", "Trouble"},
+            --winbar = {"NvimTree", "toggleterm", "Trouble"},
         },
         ignore_focus = {},
         always_divide_middle = true,

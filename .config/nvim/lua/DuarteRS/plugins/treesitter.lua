@@ -1,9 +1,10 @@
+------------------------------------
+--- Plugin para syntax highlight ---
+------------------------------------
+
 local ts_configs = require("nvim-treesitter.configs")
 
 ts_configs.setup({
-  -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "java", "c", "cpp", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
 
@@ -13,7 +14,7 @@ ts_configs.setup({
 
     highlight = {
         enable = true,
-
+       
         disable = function(lang, buf)
             local max_filesize = 100 * 1024 -- 100 KB
             local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
@@ -34,6 +35,52 @@ ts_configs.setup({
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
         -- Instead of true it can also be a list of languages
         additional_vim_regex_highlighting = false,
+    },
+
+ 
+    -- enable indentation
+    indent = { enable = true },
+
+    -- enable autotagging (w/ nvim-ts-autotag plug)
+    autotag = {
+        enable = true,
+    },
+
+
+    -- A list of parser names, or "all" (the five listed parsers should always be installed)
+    ensure_installed = {
+        "json",
+        "javascript",
+        "typescript",
+        "tsx",
+        "yaml",
+        "html",
+        "css",
+        "prisma",
+        "svelte",
+        "graphql",
+        "bash",
+        "dockerfile",
+        "gitignore",
+        "java",
+        "c",
+        "cpp",
+        "lua",
+        "vim",
+        "vimdoc",
+        "query",
+        "markdown",
+        "markdown_inline", 
+    },
+
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "<C-space>",
+            node_incremental = "<C-space>",
+            scope_incremental = false,
+            node_decremental = "<bs>",
+        },
     },
 })
 

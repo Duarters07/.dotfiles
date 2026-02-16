@@ -3,6 +3,7 @@ local builtin = require('telescope.builtin')
 
 telescope.setup({
   defaults = {
+    path_display = { "smart" },
     vimgrep_arguments = {
       'rg',
       '--color=never',

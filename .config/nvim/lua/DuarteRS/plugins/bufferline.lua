@@ -1,3 +1,7 @@
+-------------------------------------------
+--- Plugin para a barra superior buffer ---
+-------------------------------------------
+
 -- Configuração do Bufferline
 require('bufferline').setup {
   options = {
@@ -21,12 +25,12 @@ require('bufferline').setup {
     diagnostics = "nvim_lsp",  -- Mostra diagnósticos LSP no buffer
     diagnostics_update_in_insert = false,  -- Atualiza diagnósticos no modo de inserção
     offsets = { 
-      {
+      
         filetype = "NvimTree",  -- Offset para o NvimTree
         text = "File Explorer",  -- Texto de título
         text_align = "center",  -- Alinhamento do texto
         separator = true,  -- Adiciona uma linha de separação entre o NvimTree e o Bufferline
-      }
+      
     },
   },
 }
