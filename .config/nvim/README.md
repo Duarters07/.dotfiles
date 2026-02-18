@@ -1,57 +1,106 @@
-# DuarteRS Neovim Configuration
+# My full Neovim Configuration
 
-A fully customized Neovim setup built around **lazy.nvim** as the plugin manager, featuring LSP integration, intelligent autocompletion, fuzzy finding, Git integration, a rich UI, and much more. This configuration is designed for full-stack web development (JavaScript/TypeScript, Svelte, HTML/CSS, GraphQL, Python, Lua, C/C++) with a strong focus on productivity and aesthetics.
+This is my fully customized **Neovim Setup** build arround `lazy.nvim` as the plugin manager, featuring LSP integratio, intelligent autocompletion, fuzzy finding, Git integration, a rich UI, and much more. This document provides a very detailed explanation of this configuration, as well as an explanation of each plugin used. Finally, we will also include the mapping used for all the keys.
 
 ---
 
 ## Table of Contents
 
-- [Project Structure](#project-structure)
-- [How It All Loads](#how-it-all-loads)
-- [Core Configuration](#core-configuration)
-  - [Options](#options-luaduarterscoreoptionslua)
-  - [Plugin Manager (lazy.nvim)](#plugin-manager-lazynvim-luaduarterscorepluginslua)
-  - [Keymaps](#keymaps-luaduarterscorekeymapslua)
-- [Plugins (In-Depth)](#plugins-in-depth)
-  - [Colorscheme - TokyoNight](#1-colorscheme---tokyonight)
-  - [Telescope - Fuzzy Finder](#2-telescope---fuzzy-finder)
-  - [Lualine - Statusline](#3-lualine---statusline)
-  - [NvimTree - File Explorer](#4-nvimtree---file-explorer)
-  - [Bufferline](#5-bufferline)
-  - [Barbar - Buffer Tabs](#6-barbar---buffer-tabs)
-  - [Which-Key - Keybinding Helper](#7-which-key---keybinding-helper)
-  - [Autoclose - Auto Pair Brackets](#8-autoclose---auto-pair-brackets)
-  - [Mason - LSP/Tool Installer](#9-mason---lsptool-installer)
-  - [LSP Configuration](#10-lsp-configuration)
-  - [nvim-cmp - Autocompletion](#11-nvim-cmp---autocompletion)
-  - [Treesitter - Syntax Highlighting](#12-treesitter---syntax-highlighting)
-  - [Treesitter Context](#13-treesitter-context)
-  - [Rainbow Delimiters](#14-rainbow-delimiters)
-  - [Trouble - Diagnostics Panel](#15-trouble---diagnostics-panel)
-  - [Gitsigns - Git Integration](#16-gitsigns---git-integration)
-  - [ToggleTerm - Terminal](#17-toggleterm---integrated-terminal)
-  - [Alpha - Dashboard](#18-alpha---dashboard)
-  - [nvim-notify - Notifications](#19-nvim-notify---notifications)
-  - [Comment.nvim - Commenting](#20-commentnvim---commenting)
-  - [Conform - Code Formatting](#21-conform---code-formatting)
-  - [nvim-surround](#22-nvim-surround)
-  - [Dressing.nvim - Improved UI](#23-dressingnvim---improved-ui)
-- [Complete Keymap Reference](#complete-keymap-reference)
-  - [General / Neovim Defaults](#general--neovim-defaults)
-  - [File Explorer (NvimTree)](#file-explorer-nvimtree)
-  - [Telescope (Fuzzy Finding)](#telescope-fuzzy-finding)
-  - [Buffers (Barbar)](#buffers-barbar)
-  - [Buffers (Bufferline)](#buffers-bufferline)
-  - [LSP](#lsp)
-  - [Autocompletion (nvim-cmp)](#autocompletion-nvim-cmp)
-  - [Treesitter](#treesitter)
-  - [Git (Gitsigns)](#git-gitsigns)
-  - [Diagnostics (Trouble)](#diagnostics-trouble)
-  - [Terminal (ToggleTerm)](#terminal-toggleterm)
-  - [Formatting (Conform)](#formatting-conform)
-  - [Commenting (Comment.nvim)](#commenting-commentnvim)
-- [Neovim Default Keybindings Reference](#neovim-default-keybindings-reference)
-- [LSP Servers & Formatters](#lsp-servers--formatters)
+- [My full Neovim Configuration](#my-full-neovim-configuration)
+  - [Table of Contents](#table-of-contents)
+  - [Setup Requires](#setup-requires)
+  - [Project Structure](#project-structure)
+  - [Core Configuration](#core-configuration)
+    - [Options (`lua/DuarteRS/core/options.lua`)](#options-luaduarterscoreoptionslua)
+      - [General](#general)
+      - [UI](#ui)
+      - [Tabs \& Indentation](#tabs--indentation)
+      - [Search](#search)
+      - [Scrolling](#scrolling)
+      - [Splits](#splits)
+      - [Performance](#performance)
+      - [Encoding \& Font](#encoding--font)
+    - [Plugin Manager: lazy.nvim (`lua/DuarteRS/core/plugins.lua`)](#plugin-manager-lazynvim-luaduarterscorepluginslua)
+  - [Plugins (In-Depth)](#plugins-in-depth)
+    - [1. Colorscheme - TokyoNight](#1-colorscheme---tokyonight)
+    - [2. Telescope - Fuzzy Finder](#2-telescope---fuzzy-finder)
+    - [3. Lualine - Statusline](#3-lualine---statusline)
+    - [4. NvimTree - File Explorer](#4-nvimtree---file-explorer)
+    - [5. Bufferline](#5-bufferline)
+    - [6. Barbar - Buffer Tabs](#6-barbar---buffer-tabs)
+    - [7. Which-Key - Keybinding Helper](#7-which-key---keybinding-helper)
+    - [8. Autoclose - Auto Pair Brackets](#8-autoclose---auto-pair-brackets)
+    - [9. Mason - LSP/Tool Installer](#9-mason---lsptool-installer)
+    - [10. LSP Configuration](#10-lsp-configuration)
+    - [11. nvim-cmp - Autocompletion](#11-nvim-cmp---autocompletion)
+    - [12. Treesitter - Syntax Highlighting](#12-treesitter---syntax-highlighting)
+    - [13. Treesitter Context](#13-treesitter-context)
+    - [14. Rainbow Delimiters](#14-rainbow-delimiters)
+    - [15. Trouble - Diagnostics Panel](#15-trouble---diagnostics-panel)
+    - [16. Gitsigns - Git Integration](#16-gitsigns---git-integration)
+      - [Navigation](#navigation)
+      - [Actions](#actions)
+      - [Toggles](#toggles)
+      - [Text Object](#text-object)
+    - [17. ToggleTerm - Integrated Terminal](#17-toggleterm---integrated-terminal)
+    - [18. Alpha - Dashboard](#18-alpha---dashboard)
+    - [19. nvim-notify - Notifications](#19-nvim-notify---notifications)
+    - [20. Comment.nvim - Commenting](#20-commentnvim---commenting)
+    - [21. Conform - Code Formatting](#21-conform---code-formatting)
+    - [22. nvim-surround](#22-nvim-surround)
+    - [23. Dressing.nvim - Improved UI](#23-dressingnvim---improved-ui)
+  - [Complete Keymap Reference](#complete-keymap-reference)
+    - [General / Neovim Defaults](#general--neovim-defaults)
+    - [File Explorer (NvimTree)](#file-explorer-nvimtree)
+    - [Telescope (Fuzzy Finding)](#telescope-fuzzy-finding)
+    - [Buffers (Barbar)](#buffers-barbar)
+    - [Buffers (Bufferline)](#buffers-bufferline)
+    - [LSP](#lsp)
+    - [Autocompletion (nvim-cmp)](#autocompletion-nvim-cmp)
+    - [Treesitter](#treesitter)
+    - [Git (Gitsigns)](#git-gitsigns)
+    - [Diagnostics (Trouble)](#diagnostics-trouble)
+    - [Terminal (ToggleTerm)](#terminal-toggleterm)
+    - [Formatting (Conform)](#formatting-conform)
+    - [Commenting (Comment.nvim)](#commenting-commentnvim)
+    - [Surround (nvim-surround)](#surround-nvim-surround)
+  - [Neovim Default Keybindings Reference](#neovim-default-keybindings-reference)
+    - [Motion](#motion)
+    - [Editing](#editing)
+    - [Marks \& Registers](#marks--registers)
+    - [Visual Mode](#visual-mode)
+    - [Window Management](#window-management)
+    - [Tabs](#tabs)
+    - [Macros](#macros)
+  - [LSP Servers \& Formatters](#lsp-servers--formatters)
+    - [What Is an LSP Server?](#what-is-an-lsp-server)
+    - [Why These Specific Language Servers?](#why-these-specific-language-servers)
+    - [How to Manage LSP Servers](#how-to-manage-lsp-servers)
+      - [Checking which servers are active](#checking-which-servers-are-active)
+      - [Installing new servers](#installing-new-servers)
+      - [Removing a server](#removing-a-server)
+      - [Restarting a server](#restarting-a-server)
+      - [Useful LSP commands](#useful-lsp-commands)
+    - [What Are Formatters?](#what-are-formatters)
+    - [Installed Formatters (In-Depth)](#installed-formatters-in-depth)
+      - [Prettier](#prettier)
+      - [StyLua](#stylua)
+      - [isort](#isort)
+      - [Black](#black)
+    - [How to Manage Formatters](#how-to-manage-formatters)
+      - [How format-on-save works](#how-format-on-save-works)
+      - [Adding a new formatter](#adding-a-new-formatter)
+      - [Removing a formatter](#removing-a-formatter)
+      - [Disabling format-on-save](#disabling-format-on-save)
+      - [Disabling format-on-save for specific filetypes](#disabling-format-on-save-for-specific-filetypes)
+      - [Useful formatter commands](#useful-formatter-commands)
+
+---
+
+## Setup Requires
+
+- `Neovim`;
+- `Nerd Fonts` - I use Meslo Nerd Font.
 
 ---
 
@@ -59,78 +108,44 @@ A fully customized Neovim setup built around **lazy.nvim** as the plugin manager
 
 ```
 ~/.config/nvim/
-├── init.lua                          # Entry point - loads core/init.lua
-├── .stylua.toml                      # StyLua formatter config (2-space indent)
-├── lazy-lock.json                    # Lazy.nvim lockfile (pinned plugin versions)
+├── init.lua                          # Entry point
+├── .stylua.toml                      # StyLua formatter config
+├── lazy-lock.json                    # Lazy.nvim lockfile
 │
 └── lua/
     └── DuarteRS/
         ├── core/
-        │   ├── init.lua              # Core loader - requires options, plugins, and all plugin configs
-        │   ├── options.lua           # Neovim options (UI, tabs, search, scrolling, splits, etc.)
-        │   ├── keymaps.lua           # Custom keymaps (currently empty - keymaps live in plugin files)
-        │   └── plugins.lua           # lazy.nvim bootstrap + plugin declarations
+        │   ├── init.lua              # Core loader
+        │   ├── options.lua           # Neovim options
+        │   ├── keymaps.lua           # Custom keymaps
+        │   └── plugins.lua           # lazy.nvim  + plugin declarations
         │
         └── plugins/
-            ├── alpha.lua             # Dashboard / start screen
-            ├── autoclose.lua         # Auto-close brackets, quotes, etc.
+            ├── alpha.lua             # Start screen
+            ├── autoclose.lua         # Auto-close
             ├── barbar.lua            # Tab/buffer bar with keymaps
-            ├── bufferline.lua        # Alternative buffer line (also loaded)
-            ├── colorschemes.lua      # TokyoNight theme + transparent background
+            ├── bufferline.lua        # Alternative buffer line
+            ├── colorschemes.lua      # theme + transparent background
             ├── comment.lua           # Toggle comments with treesitter context
             ├── formatting.lua        # Conform.nvim auto-formatting config
-            ├── gitsigns.lua          # Git signs in gutter + git keymaps
-            ├── lsp.lua               # LSP keymaps + diagnostic config (active)
+            ├── gitsigns.lua          # Git signs in gutter
+            ├── lsp.lua               # LSP keymaps + diagnostic config
             ├── lualine.lua           # Statusline configuration
-            ├── mason.lua             # Mason + mason-lspconfig + tool installer setup
-            ├── notify.lua            # nvim-notify notification system
-            ├── nvim-cmp.lua          # Autocompletion engine config
-            ├── nvim-tree.lua         # File explorer config + keymaps
+            ├── mason.lua             # Mason 
+            ├── notify.lua            # Notification system
+            ├── nvim-cmp.lua          # Autocompletion
+            ├── nvim-tree.lua         # File explorer
             ├── rainbow-delimiters.lua # Rainbow-colored brackets
-            ├── telescope.lua         # Fuzzy finder config + keymaps
-            ├── temp_lsp.lua          # Alternative/backup LSP config (also loaded)
-            ├── toggleterm.lua        # Floating terminal config + keymaps
+            ├── telescope.lua         # Fuzzy finder config
+            ├── temp_lsp.lua          # Alternative/backup LSP config
+            ├── toggleterm.lua        # Floating terminal config
             ├── treesitter.lua        # Treesitter parsers + highlight config
             ├── treesitter-context.lua # Sticky function/class context header
-            ├── trouble.lua           # Diagnostics list panel + keymaps
-            └── which-key.lua         # Keybinding popup helper config
+            ├── trouble.lua           # Diagnostics list panel
+            └── which-key.lua         # Keybinding popup helper
 ```
 
----
-
-## How It All Loads
-
-The loading chain works as follows:
-
-```
-init.lua
-  └── require("DuarteRS.core.init")
-        ├── require("DuarteRS.core.options")        -- Set all vim.opt values
-        ├── require("DuarteRS.core.plugins")         -- Bootstrap lazy.nvim + declare all plugins
-        ├── require("DuarteRS.plugins.colorschemes") -- Apply theme first
-        ├── require("DuarteRS.plugins.telescope")
-        ├── require("DuarteRS.plugins.lualine")
-        ├── require("DuarteRS.plugins.nvim-tree")
-        ├── require("DuarteRS.plugins.bufferline")
-        ├── require("DuarteRS.plugins.which-key")
-        ├── require("DuarteRS.plugins.autoclose")
-        ├── require("DuarteRS.plugins.mason")        -- Mason before LSP
-        ├── require("DuarteRS.plugins.lsp")
-        ├── require("DuarteRS.plugins.treesitter")
-        ├── require("DuarteRS.plugins.treesitter-context")
-        ├── require("DuarteRS.plugins.trouble")
-        ├── require("DuarteRS.plugins.rainbow-delimiters")
-        ├── require("DuarteRS.plugins.barbar")
-        ├── require("DuarteRS.plugins.gitsigns")
-        ├── require("DuarteRS.plugins.toggleterm")
-        ├── require("DuarteRS.plugins.notify")
-        ├── require("DuarteRS.plugins.alpha")
-        ├── require("DuarteRS.plugins.nvim-cmp")
-        ├── require("DuarteRS.plugins.comment")
-        └── require("DuarteRS.plugins.formatting")
-```
-
-**Key detail:** Mason is loaded **before** the LSP configuration so that all language servers are installed and available when `lspconfig` sets them up. The colorscheme is loaded first so every subsequent UI plugin inherits the correct colors.
+> **Key detail:** Mason is loaded **before** the LSP configuration so that all language servers are installed and available when `lspconfig` sets them up. The colorscheme is loaded first so every subsequent UI plugin inherits the correct colors.
 
 ---
 
@@ -142,80 +157,80 @@ All Neovim options are set through a single Lua table that is iterated with `vim
 
 #### General
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `mouse` | `"a"` | Enable mouse support in all modes (normal, insert, visual, command) |
-| `clipboard` | `"unnamedplus"` | Yank/paste uses the system clipboard (`+` register) |
-| `swapfile` | `false` | Disable `.swp` swap files (avoids annoying recovery prompts) |
-| `backup` | `false` | Disable `~` backup files |
-| `undofile` | `true` | Persistent undo history saved to disk (survives closing Neovim) |
-| `hidden` | `true` | Allow switching buffers without saving the current one |
-| `scs` | `true` | Smart case search (see Search section) |
-| `wildmenu` | `true` | Enhanced command-line completion with a popup menu |
+| Option      | Value           | Description                                                         |
+| ----------- | --------------- | ------------------------------------------------------------------- |
+| `mouse`     | `"a"`           | Enable mouse support in all modes (normal, insert, visual, command) |
+| `clipboard` | `"unnamedplus"` | Yank/paste uses the system clipboard (`+` register)                 |
+| `swapfile`  | `false`         | Disable `.swp` swap files (avoids annoying recovery prompts)        |
+| `backup`    | `false`         | Disable `~` backup files                                            |
+| `undofile`  | `true`          | Persistent undo history saved to disk (survives closing Neovim)     |
+| `hidden`    | `true`          | Allow switching buffers without saving the current one              |
+| `scs`       | `true`          | Smart case search (see Search section)                              |
+| `wildmenu`  | `true`          | Enhanced command-line completion with a popup menu                  |
 
 #### UI
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `number` | `true` | Show absolute line numbers in the gutter |
-| `relativenumber` | `true` | Show relative line numbers (combined with `number`, the current line shows the absolute number) |
-| `cursorline` | `true` | Highlight the entire line where the cursor is |
-| `termguicolors` | `true` | Enable 24-bit RGB color in the terminal (required for modern themes) |
-| `signcolumn` | `"yes"` | Always show the sign column (prevents layout shift from LSP/git signs) |
-| `cmdheight` | `2` | Command line takes 2 rows (more space for messages, fewer "Press ENTER" prompts) |
-| `pumheight` | `10` | Popup completion menu shows at most 10 items |
-| `showmode` | `true` | Show the current mode (NORMAL, INSERT, etc.) in the command line |
-| `numberwidth` | `4` | Width of the line number column (4 characters) |
-| `wrap` | `true` | Long lines wrap visually to the next screen line |
-| `linebreak` | `true` | When wrapping, break at word boundaries (not mid-word) |
+| Option           | Value   | Description                                                                                     |
+| ---------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `number`         | `true`  | Show absolute line numbers in the gutter                                                        |
+| `relativenumber` | `true`  | Show relative line numbers (combined with `number`, the current line shows the absolute number) |
+| `cursorline`     | `true`  | Highlight the entire line where the cursor is                                                   |
+| `termguicolors`  | `true`  | Enable 24-bit RGB color in the terminal (required for modern themes)                            |
+| `signcolumn`     | `"yes"` | Always show the sign column (prevents layout shift from LSP/git signs)                          |
+| `cmdheight`      | `2`     | Command line takes 2 rows (more space for messages, fewer "Press ENTER" prompts)                |
+| `pumheight`      | `10`    | Popup completion menu shows at most 10 items                                                    |
+| `showmode`       | `true`  | Show the current mode (NORMAL, INSERT, etc.) in the command line                                |
+| `numberwidth`    | `4`     | Width of the line number column (4 characters)                                                  |
+| `wrap`           | `true`  | Long lines wrap visually to the next screen line                                                |
+| `linebreak`      | `true`  | When wrapping, break at word boundaries (not mid-word)                                          |
 
 #### Tabs & Indentation
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `tabstop` | `4` | A `<Tab>` character displays as 4 spaces |
-| `shiftwidth` | `4` | Each indentation level is 4 spaces (used by `>>`, `<<`, auto-indent) |
-| `expandtab` | `true` | Pressing `<Tab>` inserts spaces instead of a tab character |
-| `autoindent` | `true` | New lines inherit the indentation of the previous line |
+| Option        | Value  | Description                                                            |
+| ------------- | ------ | ---------------------------------------------------------------------- |
+| `tabstop`     | `4`    | A `<Tab>` character displays as 4 spaces                               |
+| `shiftwidth`  | `4`    | Each indentation level is 4 spaces (used by `>>`, `<<`, auto-indent)   |
+| `expandtab`   | `true` | Pressing `<Tab>` inserts spaces instead of a tab character             |
+| `autoindent`  | `true` | New lines inherit the indentation of the previous line                 |
 | `smartindent` | `true` | Automatically adds an extra indent after `{`, keywords like `if`, etc. |
 
 #### Search
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `ignorecase` | `true` | Search patterns are case-insensitive by default |
-| `smartcase` | `true` | If the search pattern contains an uppercase letter, the search becomes case-sensitive |
-| `incsearch` | `true` | Show matches incrementally as you type the search pattern |
-| `hlsearch` | `true` | Highlight all matches of the last search pattern |
+| Option       | Value  | Description                                                                           |
+| ------------ | ------ | ------------------------------------------------------------------------------------- |
+| `ignorecase` | `true` | Search patterns are case-insensitive by default                                       |
+| `smartcase`  | `true` | If the search pattern contains an uppercase letter, the search becomes case-sensitive |
+| `incsearch`  | `true` | Show matches incrementally as you type the search pattern                             |
+| `hlsearch`   | `true` | Highlight all matches of the last search pattern                                      |
 
 #### Scrolling
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `scrolloff` | `8` | Keep at least 8 lines visible above and below the cursor when scrolling |
-| `sidescrolloff` | `8` | Keep at least 8 columns visible to the left and right of the cursor |
+| Option          | Value | Description                                                             |
+| --------------- | ----- | ----------------------------------------------------------------------- |
+| `scrolloff`     | `8`   | Keep at least 8 lines visible above and below the cursor when scrolling |
+| `sidescrolloff` | `8`   | Keep at least 8 columns visible to the left and right of the cursor     |
 
 #### Splits
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `splitbelow` | `true` | Horizontal splits (`:split`) open below the current window |
+| Option       | Value  | Description                                                         |
+| ------------ | ------ | ------------------------------------------------------------------- |
+| `splitbelow` | `true` | Horizontal splits (`:split`) open below the current window          |
 | `splitright` | `true` | Vertical splits (`:vsplit`) open to the right of the current window |
 
 #### Performance
 
-| Option | Value | Description |
-|--------|-------|-------------|
+| Option       | Value | Description                                                                                           |
+| ------------ | ----- | ----------------------------------------------------------------------------------------------------- |
 | `updatetime` | `300` | After 300ms of inactivity, write the swap file and trigger `CursorHold` (affects LSP hover, gitsigns) |
-| `timeoutlen` | `500` | Wait 500ms for a mapped key sequence to complete (affects which-key popup delay) |
+| `timeoutlen` | `500` | Wait 500ms for a mapped key sequence to complete (affects which-key popup delay)                      |
 
 #### Encoding & Font
 
-| Option | Value | Description |
-|--------|-------|-------------|
-| `fileencoding` | `"utf-8"` | Files are saved in UTF-8 encoding |
-| `guifont` | `"monospace:h17"` | Font for GUI clients (Neovide, etc.) |
-| `whichwrap` | `"bs<>[]hl"` | Allow `h`, `l`, `<BS>`, `<Space>`, arrow keys to move to the previous/next line |
+| Option         | Value             | Description                                                                     |
+| -------------- | ----------------- | ------------------------------------------------------------------------------- |
+| `fileencoding` | `"utf-8"`         | Files are saved in UTF-8 encoding                                               |
+| `guifont`      | `"monospace:h17"` | Font for GUI clients (Neovide, etc.)                                            |
+| `whichwrap`    | `"bs<>[]hl"`      | Allow `h`, `l`, `<BS>`, `<Space>`, arrow keys to move to the previous/next line |
 
 ---
 
@@ -225,36 +240,28 @@ All Neovim options are set through a single Lua table that is iterated with `vim
 
 After bootstrapping, `require('lazy').setup({...})` declares all plugins. The plugin specifications include:
 
-| Category | Plugins |
-|----------|---------|
-| **Colorschemes** | `tokyonight.nvim`, `onedark.vim`, `vim-nightfly-colors`, `catppuccin/nvim`, `kanagawa.nvim`, `vesper.nvim` |
-| **Fuzzy Finder** | `telescope.nvim`, `plenary.nvim` (dependency) |
-| **Statusline** | `lualine.nvim`, `nvim-web-devicons` |
-| **File Explorer** | `nvim-tree.lua`, `nvim-web-devicons` |
-| **Buffer Line** | `bufferline.nvim`, `vim-bbye` |
-| **Keybinding Helper** | `which-key.nvim` |
-| **Auto-pairs** | `AutoSave.nvim`, `autoclose.nvim`, `nvim-autopairs` |
-| **LSP** | `nvim-lspconfig`, `mason.nvim`, `mason-lspconfig.nvim`, `mason-tool-installer.nvim` |
-| **Completion** | `nvim-cmp`, `cmp-buffer`, `cmp-path`, `LuaSnip`, `cmp_luasnip`, `cmp-nvim-lsp`, `cmp-nvim-lua`, `friendly-snippets`, `lspkind.nvim` |
-| **Treesitter** | `nvim-treesitter`, `rainbow-delimiters.nvim`, `nvim-treesitter-context`, `nvim-ts-autotag` |
-| **Diagnostics** | `trouble.nvim`, `todo-comments.nvim` |
-| **Buffer Tabs** | `barbar.nvim` |
-| **Git** | `gitsigns.nvim` |
-| **Terminal** | `toggleterm.nvim` |
-| **Notifications** | `nvim-notify` (lazy=false, priority=1000 for immediate load) |
-| **Dashboard** | `alpha-nvim` (loads on `VimEnter`) |
-| **UI Enhancement** | `dressing.nvim` (loads on `VeryLazy`) |
-| **Comments** | `Comment.nvim`, `nvim-ts-context-commentstring` |
-| **Surround** | `nvim-surround` (config=true, uses defaults) |
-| **Formatting** | `conform.nvim` |
-
----
-
-### Keymaps (`lua/DuarteRS/core/keymaps.lua`)
-
-This file is currently empty. All keymaps are defined **within their respective plugin configuration files** for better organization and locality. See the [Complete Keymap Reference](#complete-keymap-reference) section for every mapping.
-
-> **Note:** The leader key is `<Space>` (Neovim default with lazy.nvim).
+| Category              | Plugins                                                                                                                             |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Colorschemes**      | `tokyonight.nvim`, `onedark.vim`, `vim-nightfly-colors`, `catppuccin/nvim`, `kanagawa.nvim`, `vesper.nvim`                          |
+| **Fuzzy Finder**      | `telescope.nvim`, `plenary.nvim` (dependency)                                                                                       |
+| **Statusline**        | `lualine.nvim`, `nvim-web-devicons`                                                                                                 |
+| **File Explorer**     | `nvim-tree.lua`, `nvim-web-devicons`                                                                                                |
+| **Buffer Line**       | `bufferline.nvim`, `vim-bbye`                                                                                                       |
+| **Keybinding Helper** | `which-key.nvim`                                                                                                                    |
+| **Auto-pairs**        | `AutoSave.nvim`, `autoclose.nvim`, `nvim-autopairs`                                                                                 |
+| **LSP**               | `nvim-lspconfig`, `mason.nvim`, `mason-lspconfig.nvim`, `mason-tool-installer.nvim`                                                 |
+| **Completion**        | `nvim-cmp`, `cmp-buffer`, `cmp-path`, `LuaSnip`, `cmp_luasnip`, `cmp-nvim-lsp`, `cmp-nvim-lua`, `friendly-snippets`, `lspkind.nvim` |
+| **Treesitter**        | `nvim-treesitter`, `rainbow-delimiters.nvim`, `nvim-treesitter-context`, `nvim-ts-autotag`                                          |
+| **Diagnostics**       | `trouble.nvim`, `todo-comments.nvim`                                                                                                |
+| **Buffer Tabs**       | `barbar.nvim`                                                                                                                       |
+| **Git**               | `gitsigns.nvim`                                                                                                                     |
+| **Terminal**          | `toggleterm.nvim`                                                                                                                   |
+| **Notifications**     | `nvim-notify` (lazy=false, priority=1000 for immediate load)                                                                        |
+| **Dashboard**         | `alpha-nvim` (loads on `VimEnter`)                                                                                                  |
+| **UI Enhancement**    | `dressing.nvim` (loads on `VeryLazy`)                                                                                               |
+| **Comments**          | `Comment.nvim`, `nvim-ts-context-commentstring`                                                                                     |
+| **Surround**          | `nvim-surround` (config=true, uses defaults)                                                                                        |
+| **Formatting**        | `conform.nvim`                                                                                                                      |
 
 ---
 
@@ -265,27 +272,10 @@ This file is currently empty. All keymaps are defined **within their respective 
 **File:** `lua/DuarteRS/plugins/colorschemes.lua`
 **Plugin:** [folke/tokyonight.nvim](https://github.com/folke/tokyonight.nvim)
 
-Six colorschemes are installed, but **TokyoNight** in the `"night"` style is the active one. The theme is heavily customized with a deep navy-blue palette:
-
-| Color Variable | Custom Value | Purpose |
-|----------------|-------------|---------|
-| `bg` | `#011628` | Main editor background |
-| `bg_dark` | `#011423` | Darker background variant |
-| `bg_float` | `#011423` | Floating window background |
-| `bg_highlight` | `#143652` | Highlighted line background |
-| `bg_popup` | `#011423` | Popup menu background |
-| `bg_search` | `#0A64AC` | Search highlight background |
-| `bg_sidebar` | `#011423` | Sidebar (NvimTree) background |
-| `bg_statusline` | `#011423` | Statusline background |
-| `bg_visual` | `#275378` | Visual selection background |
-| `fg` | `#CBE0F0` | Main foreground text |
-| `fg_dark` | `#B4D0E9` | Dimmer foreground |
-| `fg_float` | `#CBE0F0` | Floating window text |
-| `fg_gutter` | `#627E97` | Line number / gutter text |
-| `fg_sidebar` | `#B4D0E9` | Sidebar text |
-| `border` | `#547998` | Window border color |
+Six colorschemes are installed, but **TokyoNight** in the `"night"` style is the active one. The theme is heavily customized with a deep navy-blue palette.
 
 **Transparent background** is applied after the colorscheme loads. The following highlight groups have their background set to `NONE`:
+
 - `Normal`, `NormalNC` (active and inactive windows)
 - `EndOfBuffer` (the `~` lines below the file)
 - `NormalFloat` (floating windows)
@@ -294,6 +284,7 @@ Six colorschemes are installed, but **TokyoNight** in the `"night"` style is the
 This allows the terminal background to show through, giving a seamless look.
 
 **Available but inactive schemes** (uncomment to switch):
+
 - `onedark` - Atom's One Dark theme
 - `nightfly` - Dark navy theme
 - `catppuccin` - Pastel theme with multiple flavors
@@ -318,28 +309,14 @@ Telescope is configured with:
 
 **Keymaps:**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `<leader>ff` | `find_files` | Find files in the project (includes hidden, excludes .git) |
-| `<leader>fg` | `live_grep` | Grep through all files in real time (includes hidden files) |
-| `<leader>fb` | `buffers` | List and switch between open buffers |
-| `<leader>fh` | `help_tags` | Search Neovim help documentation |
-| `<leader>fp` | `planets` | Fun easter egg - shows planets |
-| `<leader>gc` | `git_commits` | Browse Git commit history |
-
-**Inside a Telescope picker**, these default keybindings apply:
-
-| Key | Mode | Action |
-|-----|------|--------|
-| `<CR>` | Insert/Normal | Confirm selection (open file) |
-| `<C-x>` | Insert | Open in horizontal split |
-| `<C-v>` | Insert | Open in vertical split |
-| `<C-t>` | Insert | Open in new tab |
-| `<C-n>` / `<C-p>` | Insert | Next / previous item |
-| `j` / `k` | Normal | Next / previous item |
-| `<C-u>` / `<C-d>` | Insert | Scroll preview up / down |
-| `<Esc>` | Normal | Close telescope |
-| `<C-c>` | Insert | Close telescope |
+| Keymap       | Action        | Description                                                 |
+| ------------ | ------------- | ----------------------------------------------------------- |
+| `<leader>ff` | `find_files`  | Find files in the project (includes hidden, excludes .git)  |
+| `<leader>fg` | `live_grep`   | Grep through all files in real time (includes hidden files) |
+| `<leader>fb` | `buffers`     | List and switch between open buffers                        |
+| `<leader>fh` | `help_tags`   | Search Neovim help documentation                            |
+| `<leader>fp` | `planets`     | Fun easter egg - shows planets                              |
+| `<leader>gc` | `git_commits` | Browse Git commit history                                   |
 
 ---
 
@@ -350,27 +327,19 @@ Telescope is configured with:
 
 Lualine provides a rich, informative statusline at the bottom of the editor. The theme is set to `'auto'` (inherits from the active colorscheme).
 
-**Statusline layout (left to right):**
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│ A: fileformat mode │ B: branch diff diagnostics │ C: buffers filename │
-│                                               X: filesize filetype │ Y: progress │ Z: selectioncount location │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-| Section | Components | Description |
-|---------|-----------|-------------|
-| **A** (far left) | `fileformat`, `mode` | Shows the file format (Unix/DOS/Mac) and current Vim mode |
-| **B** | `branch`, `diff`, `diagnostics` | Git branch name, diff stats (+/-/~), LSP diagnostic counts |
-| **C** (center) | `buffers`, `filename`, `aerial` | Open buffers, current filename, code outline |
-| **X** | `filesize`, `filetype` | File size and detected filetype |
-| **Y** | `progress` | Scroll position as percentage through the file |
-| **Z** (far right) | `selectioncount`, `location` | Number of selected characters/lines, cursor line:column |
+| Section           | Components                      | Description                                                |
+| ----------------- | ------------------------------- | ---------------------------------------------------------- |
+| **A** (far left)  | `fileformat`, `mode`            | Shows the file format (Unix/DOS/Mac) and current Vim mode  |
+| **B**             | `branch`, `diff`, `diagnostics` | Git branch name, diff stats (+/-/~), LSP diagnostic counts |
+| **C** (center)    | `buffers`, `filename`, `aerial` | Open buffers, current filename, code outline               |
+| **X**             | `filesize`, `filetype`          | File size and detected filetype                            |
+| **Y**             | `progress`                      | Scroll position as percentage through the file             |
+| **Z** (far right) | `selectioncount`, `location`    | Number of selected characters/lines, cursor line:column    |
 
 **Configuration details:**
+
 - `globalstatus = true` - A single statusline shared across all windows (instead of per-window)
-- **Separators:** Section separators use powerline-style rounded icons (`` / ``), component separators use thin chevrons (`` / ``)
+- **Separators:** Section separators use powerline-style rounded icons (`/`), component separators use thin chevrons (`/`)
 - **Refresh rate:** Statusline refreshes every 10ms (near real-time), tabline and winbar refresh every 1000ms
 
 ---
@@ -384,53 +353,53 @@ A file explorer sidebar. Neovim's built-in `netrw` file explorer is **disabled**
 
 **Configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `view.width` | `30` | Sidebar is 30 columns wide |
-| `view.side` | `"right"` | Sidebar opens on the **right** side |
-| `view.relativenumber` | `true` | Shows relative line numbers inside the tree |
-| `sort.sorter` | `"case_sensitive"` | Files are sorted case-sensitively (uppercase first) |
-| `renderer.group_empty` | `true` | Empty directories are grouped with their child (e.g., `src/utils/` shown as one node) |
-| `renderer.highlight_opened_files` | `"all"` | All opened files are highlighted in the tree |
-| `renderer.indent_markers.enable` | `true` | Show indent guide lines for nested directories |
-| `renderer.icons.glyphs.folder.arrow_closed` | `` | Arrow icon for collapsed folders |
-| `renderer.icons.glyphs.folder.arrow_open` | `` | Arrow icon for expanded folders |
-| `filters.dotfiles` | `false` | Dotfiles (hidden files) **are shown** |
-| `git.enable` | `true` | Show git status icons next to files |
-| `git.ignore` | `false` | Files in `.gitignore` **are shown** |
-| `actions.open_file.quit_on_open` | `true` | The tree **closes automatically** when you open a file |
-| `actions.open_file.window_picker.enable` | `false` | Files always open in the last focused window |
-| `update_focused_file.enable` | `true` | The tree auto-highlights the currently open file |
-| `update_focused_file.update_cwd` | `true` | Changes the working directory to match the current file |
+| Setting                                     | Value              | Description                                                                           |
+| ------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------- |
+| `view.width`                                | `30`               | Sidebar is 30 columns wide                                                            |
+| `view.side`                                 | `"right"`          | Sidebar opens on the **right** side                                                   |
+| `view.relativenumber`                       | `true`             | Shows relative line numbers inside the tree                                           |
+| `sort.sorter`                               | `"case_sensitive"` | Files are sorted case-sensitively (uppercase first)                                   |
+| `renderer.group_empty`                      | `true`             | Empty directories are grouped with their child (e.g., `src/utils/` shown as one node) |
+| `renderer.highlight_opened_files`           | `"all"`            | All opened files are highlighted in the tree                                          |
+| `renderer.indent_markers.enable`            | `true`             | Show indent guide lines for nested directories                                        |
+| `renderer.icons.glyphs.folder.arrow_closed` | ``                 | Arrow icon for collapsed folders                                                      |
+| `renderer.icons.glyphs.folder.arrow_open`   | ``                 | Arrow icon for expanded folders                                                       |
+| `filters.dotfiles`                          | `false`            | Dotfiles (hidden files) **are shown**                                                 |
+| `git.enable`                                | `true`             | Show git status icons next to files                                                   |
+| `git.ignore`                                | `false`            | Files in `.gitignore` **are shown**                                                   |
+| `actions.open_file.quit_on_open`            | `true`             | The tree **closes automatically** when you open a file                                |
+| `actions.open_file.window_picker.enable`    | `false`            | Files always open in the last focused window                                          |
+| `update_focused_file.enable`                | `true`             | The tree auto-highlights the currently open file                                      |
+| `update_focused_file.update_cwd`            | `true`             | Changes the working directory to match the current file                               |
 
 **Keymaps:**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `<leader>ee` | `NvimTreeFocus` | Open/focus the file explorer |
+| Keymap       | Action                   | Description                                  |
+| ------------ | ------------------------ | -------------------------------------------- |
+| `<leader>ee` | `NvimTreeFocus`          | Open/focus the file explorer                 |
 | `<leader>ef` | `NvimTreeFindFileToggle` | Toggle the tree and jump to the current file |
-| `<leader>ec` | `NvimTreeCollapse` | Collapse all open directories |
-| `<leader>er` | `NvimTreeRefresh` | Refresh the file tree |
+| `<leader>ec` | `NvimTreeCollapse`       | Collapse all open directories                |
+| `<leader>er` | `NvimTreeRefresh`        | Refresh the file tree                        |
 
 **Inside the NvimTree window** (default keybindings):
 
-| Key | Action |
-|-----|--------|
-| `<CR>` or `o` | Open file or expand directory |
-| `a` | Create a new file or directory (end with `/` for directory) |
-| `d` | Delete file/directory |
-| `r` | Rename file/directory |
-| `x` | Cut file (for moving) |
-| `c` | Copy file |
-| `p` | Paste file |
-| `y` | Copy filename |
-| `Y` | Copy relative path |
-| `gy` | Copy absolute path |
-| `R` | Refresh tree |
-| `H` | Toggle hidden files |
-| `I` | Toggle gitignore filter |
-| `q` | Close NvimTree |
-| `?` | Show help |
+| Key           | Action                                                      |
+| ------------- | ----------------------------------------------------------- |
+| `<CR>` or `o` | Open file or expand directory                               |
+| `a`           | Create a new file or directory (end with `/` for directory) |
+| `d`           | Delete file/directory                                       |
+| `r`           | Rename file/directory                                       |
+| `x`           | Cut file (for moving)                                       |
+| `c`           | Copy file                                                   |
+| `p`           | Paste file                                                  |
+| `y`           | Copy filename                                               |
+| `Y`           | Copy relative path                                          |
+| `gy`          | Copy absolute path                                          |
+| `R`           | Refresh tree                                                |
+| `H`           | Toggle hidden files                                         |
+| `I`           | Toggle gitignore filter                                     |
+| `q`           | Close NvimTree                                              |
+| `?`           | Show help                                                   |
 
 ---
 
@@ -443,24 +412,24 @@ Displays open buffers as tabs at the top of the editor. Configured alongside Bar
 
 **Configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `numbers` | `"ordinal"` | Buffers are numbered 1, 2, 3... (not by buffer ID) |
-| `indicator.style` | `"icon"` | Active buffer has a vertical bar indicator |
-| `indicator.icon` | `▎` | The indicator character |
-| `modified_icon` | `●` | Shown next to modified (unsaved) buffers |
-| `tab_size` | `18` | Minimum tab width in characters |
-| `max_name_length` | `18` | Filenames are truncated at 18 characters |
-| `diagnostics` | `"nvim_lsp"` | LSP diagnostic counts appear on buffer tabs |
-| `offsets` | NvimTree offset | When NvimTree is open, bufferline shifts to accommodate it, showing "File Explorer" |
+| Setting           | Value           | Description                                                                         |
+| ----------------- | --------------- | ----------------------------------------------------------------------------------- |
+| `numbers`         | `"ordinal"`     | Buffers are numbered 1, 2, 3... (not by buffer ID)                                  |
+| `indicator.style` | `"icon"`        | Active buffer has a vertical bar indicator                                          |
+| `indicator.icon`  | `▎`             | The indicator character                                                             |
+| `modified_icon`   | `●`             | Shown next to modified (unsaved) buffers                                            |
+| `tab_size`        | `18`            | Minimum tab width in characters                                                     |
+| `max_name_length` | `18`            | Filenames are truncated at 18 characters                                            |
+| `diagnostics`     | `"nvim_lsp"`    | LSP diagnostic counts appear on buffer tabs                                         |
+| `offsets`         | NvimTree offset | When NvimTree is open, bufferline shifts to accommodate it, showing "File Explorer" |
 
 **Keymaps:**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `<leader>bn` | `BufferLineCycleNext` | Go to the next buffer |
+| Keymap       | Action                | Description               |
+| ------------ | --------------------- | ------------------------- |
+| `<leader>bn` | `BufferLineCycleNext` | Go to the next buffer     |
 | `<leader>bp` | `BufferLineCyclePrev` | Go to the previous buffer |
-| `<leader>bc` | `bdelete` | Close the current buffer |
+| `<leader>bc` | `bdelete`             | Close the current buffer  |
 
 ---
 
@@ -473,32 +442,32 @@ Barbar is a second buffer tab plugin providing extensive buffer manipulation key
 
 **Keymaps:**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `Alt + ,` | `BufferPrevious` | Go to previous buffer |
-| `Alt + .` | `BufferNext` | Go to next buffer |
-| `Alt + <` | `BufferMovePrevious` | Move current buffer one position left |
-| `Alt + >` | `BufferMoveNext` | Move current buffer one position right |
-| `<leader>1` - `<leader>9` | `BufferGoto 1-9` | Jump directly to buffer at position 1-9 |
-| `<leader>0` | `BufferLast` | Jump to the last buffer |
-| `Alt + p` | `BufferPin` | Pin/unpin the current buffer |
-| `Alt + c` | `BufferClose` | Close the current buffer |
-| `Ctrl + p` | `BufferPick` | Enter buffer-picking mode (shows letters on each tab to jump to) |
-| `<Space>bb` | `BufferOrderByBufferNumber` | Sort buffers by buffer number |
-| `<Space>bd` | `BufferOrderByDirectory` | Sort buffers by directory |
-| `<Space>bl` | `BufferOrderByLanguage` | Sort buffers by file language |
-| `<Space>bw` | `BufferOrderByWindowNumber` | Sort buffers by window number |
+| Keymap                    | Action                      | Description                                                      |
+| ------------------------- | --------------------------- | ---------------------------------------------------------------- |
+| `Alt + ,`                 | `BufferPrevious`            | Go to previous buffer                                            |
+| `Alt + .`                 | `BufferNext`                | Go to next buffer                                                |
+| `Alt + <`                 | `BufferMovePrevious`        | Move current buffer one position left                            |
+| `Alt + >`                 | `BufferMoveNext`            | Move current buffer one position right                           |
+| `<leader>1` - `<leader>9` | `BufferGoto 1-9`            | Jump directly to buffer at position 1-9                          |
+| `<leader>0`               | `BufferLast`                | Jump to the last buffer                                          |
+| `Alt + p`                 | `BufferPin`                 | Pin/unpin the current buffer                                     |
+| `Alt + c`                 | `BufferClose`               | Close the current buffer                                         |
+| `Ctrl + p`                | `BufferPick`                | Enter buffer-picking mode (shows letters on each tab to jump to) |
+| `<Space>bb`               | `BufferOrderByBufferNumber` | Sort buffers by buffer number                                    |
+| `<Space>bd`               | `BufferOrderByDirectory`    | Sort buffers by directory                                        |
+| `<Space>bl`               | `BufferOrderByLanguage`     | Sort buffers by file language                                    |
+| `<Space>bw`               | `BufferOrderByWindowNumber` | Sort buffers by window number                                    |
 
 **Additional Barbar commands (no keybinds set):**
 
-| Command | Description |
-|---------|-------------|
-| `:BufferWipeout` | Completely remove a buffer (including undo history) |
-| `:BufferCloseAllButCurrent` | Close all buffers except the active one |
-| `:BufferCloseAllButPinned` | Close all buffers except pinned ones |
-| `:BufferCloseAllButCurrentOrPinned` | Close all except current and pinned |
-| `:BufferCloseBuffersLeft` | Close all buffers to the left |
-| `:BufferCloseBuffersRight` | Close all buffers to the right |
+| Command                             | Description                                         |
+| ----------------------------------- | --------------------------------------------------- |
+| `:BufferWipeout`                    | Completely remove a buffer (including undo history) |
+| `:BufferCloseAllButCurrent`         | Close all buffers except the active one             |
+| `:BufferCloseAllButPinned`          | Close all buffers except pinned ones                |
+| `:BufferCloseAllButCurrentOrPinned` | Close all except current and pinned                 |
+| `:BufferCloseBuffersLeft`           | Close all buffers to the left                       |
+| `:BufferCloseBuffersRight`          | Close all buffers to the right                      |
 
 ---
 
@@ -511,25 +480,25 @@ Which-Key shows a popup window when you start pressing a key sequence (like `<le
 
 **Configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `preset` | `"modern"` | Uses the modern UI style |
-| `plugins.marks` | `true` | Shows marks when pressing `'` or `` ` `` |
-| `plugins.registers` | `true` | Shows register contents when pressing `"` |
-| `plugins.spelling.enabled` | `true` | Shows spelling suggestions when pressing `z=` |
-| `plugins.spelling.suggestions` | `20` | Up to 20 spelling suggestions |
-| `layout.align` | `"center"` | Key groups are centered in the popup |
-| `show_help` | `true` | Shows help text when pressing `?` |
+| Setting                        | Value      | Description                                   |
+| ------------------------------ | ---------- | --------------------------------------------- |
+| `preset`                       | `"modern"` | Uses the modern UI style                      |
+| `plugins.marks`                | `true`     | Shows marks when pressing `'` or `` ` ``      |
+| `plugins.registers`            | `true`     | Shows register contents when pressing `"`     |
+| `plugins.spelling.enabled`     | `true`     | Shows spelling suggestions when pressing `z=` |
+| `plugins.spelling.suggestions` | `20`       | Up to 20 spelling suggestions                 |
+| `layout.align`                 | `"center"` | Key groups are centered in the popup          |
+| `show_help`                    | `true`     | Shows help text when pressing `?`             |
 
 **Leader key groups** (what you see when pressing `<Space>`):
 
-| Prefix | Group Name | Description |
-|--------|-----------|-------------|
-| `<leader>b` | **Buffers** | Buffer management commands |
-| `<leader>e` | **File Explorer** | NvimTree commands |
-| `<leader>f` | **Find / Telescope** | Telescope search commands |
-| `<leader>g` | **Git** | Git-related commands |
-| `<leader>v` | **Split / View** | Split/view management |
+| Prefix      | Group Name           | Description                |
+| ----------- | -------------------- | -------------------------- |
+| `<leader>b` | **Buffers**          | Buffer management commands |
+| `<leader>e` | **File Explorer**    | NvimTree commands          |
+| `<leader>f` | **Find / Telescope** | Telescope search commands  |
+| `<leader>g` | **Git**              | Git-related commands       |
+| `<leader>v` | **Split / View**     | Split/view management      |
 
 ---
 
@@ -542,21 +511,22 @@ Automatically inserts and manages matching pairs of brackets, quotes, and other 
 
 **Pair behavior:**
 
-| Character | Escape | Close | Pair | Special Rules |
-|-----------|--------|-------|------|---------------|
-| `(` | No | Yes | `()` | Typing `(` inserts `()` with cursor between |
-| `[` | No | Yes | `[]` | Same as above |
-| `{` | No | Yes | `{}` | Same as above |
-| `)` | Yes | No | `()` | Typing `)` moves past the closing `)` instead of inserting |
-| `]` | Yes | No | `[]` | Same behavior |
-| `}` | Yes | No | `{}` | Same behavior |
-| `>` | Yes | No | `<>` | Escapes past `>` but doesn't auto-close (avoids conflicts with operators) |
-| `"` | Yes | Yes | `""` | Auto-closes AND escapes; **disabled in gitcommit** filetypes |
-| `'` | Yes | Yes | `''` | Same as `"` |
-| `` ` `` | Yes | Yes | ` `` ` | Same; also **disabled in tex** filetypes |
-| `$` | Yes | Yes | `$$` | **Only enabled in tex** filetypes (LaTeX math mode) |
+| Character | Escape | Close | Pair   | Special Rules                                                             |
+| --------- | ------ | ----- | ------ | ------------------------------------------------------------------------- |
+| `(`       | No     | Yes   | `()`   | Typing `(` inserts `()` with cursor between                               |
+| `[`       | No     | Yes   | `[]`   | Same as above                                                             |
+| `{`       | No     | Yes   | `{}`   | Same as above                                                             |
+| `)`       | Yes    | No    | `()`   | Typing `)` moves past the closing `)` instead of inserting                |
+| `]`       | Yes    | No    | `[]`   | Same behavior                                                             |
+| `}`       | Yes    | No    | `{}`   | Same behavior                                                             |
+| `>`       | Yes    | No    | `<>`   | Escapes past `>` but doesn't auto-close (avoids conflicts with operators) |
+| `"`       | Yes    | Yes   | `""`   | Auto-closes AND escapes; **disabled in gitcommit** filetypes              |
+| `'`       | Yes    | Yes   | `''`   | Same as `"`                                                               |
+| `` ` ``   | Yes    | Yes   | ` `` ` | Same; also **disabled in tex** filetypes                                  |
+| `$`       | Yes    | Yes   | `$$`   | **Only enabled in tex** filetypes (LaTeX math mode)                       |
 
 **Options:**
+
 - Disabled entirely in `text` filetypes
 - `auto_indent = true` - Adds proper indentation when pressing Enter between pairs
 - `disable_when_touch = false` - Pairs are inserted even when the cursor is touching another character
@@ -572,38 +542,38 @@ Mason is a portable package manager that installs and manages LSP servers, forma
 
 **Mason UI icons:**
 
-| Status | Icon |
-|--------|------|
-| Installed | `✓` |
-| Pending | `➜` |
-| Uninstalled | `✗` |
+| Status      | Icon |
+| ----------- | ---- |
+| Installed   | `✓`  |
+| Pending     | `➜`  |
+| Uninstalled | `✗`  |
 
 **mason-lspconfig** ensures these LSP servers are installed and configured:
 
-| Server | Language(s) | Custom Config |
-|--------|------------|---------------|
-| `ts_ls` | TypeScript / JavaScript | Default handler |
-| `html` | HTML | Default handler |
-| `cssls` | CSS / SCSS / LESS | Default handler |
-| `tailwindcss` | Tailwind CSS | Default handler |
-| `svelte` | Svelte | Custom: notifies Svelte server when `.js`/`.ts` files change |
-| `lua_ls` | Lua | Custom: adds `vim` as a global, disables third-party checking, enables call snippets |
-| `graphql` | GraphQL | Custom: extended filetypes (HTML, React, CSS, Sass, SCSS, LESS, Svelte) |
-| `emmet_ls` | Emmet (HTML/CSS snippets) | Default handler |
-| `prismals` | Prisma ORM | Default handler |
-| `pyright` | Python | Default handler |
-| `eslint` | JavaScript/TypeScript linting | Default handler |
+| Server        | Language(s)                   | Custom Config                                                                        |
+| ------------- | ----------------------------- | ------------------------------------------------------------------------------------ |
+| `ts_ls`       | TypeScript / JavaScript       | Default handler                                                                      |
+| `html`        | HTML                          | Default handler                                                                      |
+| `cssls`       | CSS / SCSS / LESS             | Default handler                                                                      |
+| `tailwindcss` | Tailwind CSS                  | Default handler                                                                      |
+| `svelte`      | Svelte                        | Custom: notifies Svelte server when `.js`/`.ts` files change                         |
+| `lua_ls`      | Lua                           | Custom: adds `vim` as a global, disables third-party checking, enables call snippets |
+| `graphql`     | GraphQL                       | Custom: extended filetypes (HTML, React, CSS, Sass, SCSS, LESS, Svelte)              |
+| `emmet_ls`    | Emmet (HTML/CSS snippets)     | Default handler                                                                      |
+| `prismals`    | Prisma ORM                    | Default handler                                                                      |
+| `pyright`     | Python                        | Default handler                                                                      |
+| `eslint`      | JavaScript/TypeScript linting | Default handler                                                                      |
 
 All servers receive `cmp_nvim_lsp` enhanced capabilities for autocompletion integration.
 
 **mason-tool-installer** ensures these tools are installed:
 
-| Tool | Purpose |
-|------|---------|
+| Tool       | Purpose                                                        |
+| ---------- | -------------------------------------------------------------- |
 | `prettier` | Formatter for JS, TS, HTML, CSS, JSON, YAML, Markdown, GraphQL |
-| `stylua` | Formatter for Lua |
-| `isort` | Python import sorter |
-| `black` | Python code formatter |
+| `stylua`   | Formatter for Lua                                              |
+| `isort`    | Python import sorter                                           |
+| `black`    | Python code formatter                                          |
 
 ---
 
@@ -616,31 +586,31 @@ This file defines keymaps that activate when an LSP server attaches to a buffer 
 
 **LSP Keymaps** (only active in buffers with an attached LSP):
 
-| Keymap | Mode | Action | Description |
-|--------|------|--------|-------------|
-| `gR` | Normal | `Telescope lsp_references` | Show all references to the symbol under cursor in Telescope |
-| `gD` | Normal | `vim.lsp.buf.declaration` | Jump to the declaration of the symbol |
-| `gd` | Normal | `Telescope lsp_definitions` | Show definitions in Telescope |
-| `gi` | Normal | `Telescope lsp_implementations` | Show implementations in Telescope |
-| `gt` | Normal | `Telescope lsp_type_definitions` | Show type definitions in Telescope |
-| `<leader>ca` | Normal, Visual | `vim.lsp.buf.code_action` | Show available code actions (quick fixes, refactors) |
-| `<leader>rn` | Normal | `vim.lsp.buf.rename` | Rename the symbol under cursor across the project |
-| `<leader>D` | Normal | `Telescope diagnostics bufnr=0` | Show all diagnostics for the current buffer in Telescope |
-| `<leader>d` | Normal | `vim.diagnostic.open_float` | Show diagnostics for the current line in a floating window |
-| `[d` | Normal | `vim.diagnostic.goto_prev` | Jump to the previous diagnostic |
-| `]d` | Normal | `vim.diagnostic.goto_next` | Jump to the next diagnostic |
-| `K` | Normal | `vim.lsp.buf.hover` | Show hover documentation for the symbol under cursor |
-| `<leader>rs` | Normal | `:LspRestart` | Restart all LSP clients |
+| Keymap       | Mode           | Action                           | Description                                                 |
+| ------------ | -------------- | -------------------------------- | ----------------------------------------------------------- |
+| `gR`         | Normal         | `Telescope lsp_references`       | Show all references to the symbol under cursor in Telescope |
+| `gD`         | Normal         | `vim.lsp.buf.declaration`        | Jump to the declaration of the symbol                       |
+| `gd`         | Normal         | `Telescope lsp_definitions`      | Show definitions in Telescope                               |
+| `gi`         | Normal         | `Telescope lsp_implementations`  | Show implementations in Telescope                           |
+| `gt`         | Normal         | `Telescope lsp_type_definitions` | Show type definitions in Telescope                          |
+| `<leader>ca` | Normal, Visual | `vim.lsp.buf.code_action`        | Show available code actions (quick fixes, refactors)        |
+| `<leader>rn` | Normal         | `vim.lsp.buf.rename`             | Rename the symbol under cursor across the project           |
+| `<leader>D`  | Normal         | `Telescope diagnostics bufnr=0`  | Show all diagnostics for the current buffer in Telescope    |
+| `<leader>d`  | Normal         | `vim.diagnostic.open_float`      | Show diagnostics for the current line in a floating window  |
+| `[d`         | Normal         | `vim.diagnostic.goto_prev`       | Jump to the previous diagnostic                             |
+| `]d`         | Normal         | `vim.diagnostic.goto_next`       | Jump to the next diagnostic                                 |
+| `K`          | Normal         | `vim.lsp.buf.hover`              | Show hover documentation for the symbol under cursor        |
+| `<leader>rs` | Normal         | `:LspRestart`                    | Restart all LSP clients                                     |
 
 **Diagnostic display configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `virtual_text` | `true` | Inline diagnostic messages appear at the end of the line |
-| `signs` | Custom icons | Sign column icons: `` (Error), `!` (Warning), `+` (Hint), `i` (Info) |
-| `update_in_insert` | `false` | Diagnostics don't update while typing in insert mode (less distracting) |
-| `underline` | `true` | Problematic code is underlined |
-| `severity_sort` | `true` | More severe diagnostics (errors) are shown first |
+| Setting            | Value        | Description                                                             |
+| ------------------ | ------------ | ----------------------------------------------------------------------- |
+| `virtual_text`     | `true`       | Inline diagnostic messages appear at the end of the line                |
+| `signs`            | Custom icons | Sign column icons: ``(Error),`!`(Warning),`+`(Hint),`i` (Info)          |
+| `update_in_insert` | `false`      | Diagnostics don't update while typing in insert mode (less distracting) |
+| `underline`        | `true`       | Problematic code is underlined                                          |
+| `severity_sort`    | `true`       | More severe diagnostics (errors) are shown first                        |
 
 ---
 
@@ -655,50 +625,52 @@ A powerful autocompletion engine. It aggregates suggestions from multiple source
 
 **Completion sources** (in priority order):
 
-| Source | Label | Description |
-|--------|-------|-------------|
-| `nvim_lsp` | `[LSP]` | Suggestions from the active LSP server (functions, variables, types) |
-| `luasnip` | `[Snippet]` | Snippet expansions (e.g., `log` -> `console.log()`) |
-| `buffer` | `[Buffer]` | Words from the current buffer |
-| `path` | `[Path]` | Filesystem path completion |
+| Source     | Label       | Description                                                          |
+| ---------- | ----------- | -------------------------------------------------------------------- |
+| `nvim_lsp` | `[LSP]`     | Suggestions from the active LSP server (functions, variables, types) |
+| `luasnip`  | `[Snippet]` | Snippet expansions (e.g., `log` -> `console.log()`)                  |
+| `buffer`   | `[Buffer]`  | Words from the current buffer                                        |
+| `path`     | `[Path]`    | Filesystem path completion                                           |
 
 **Keymaps (in insert/command mode):**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `Ctrl + Up` | Select previous item | Move up in the completion menu |
-| `Ctrl + Down` | Select next item | Move down in the completion menu |
-| `Ctrl + b` | Scroll docs up | Scroll the documentation window up |
-| `Ctrl + f` | Scroll docs down | Scroll the documentation window down |
-| `Ctrl + Space` | Trigger completion | Manually open the completion menu |
-| `Ctrl + e` | Abort/close | Close the completion menu |
-| `Ctrl + y` | Disabled | The default `<C-y>` mapping is explicitly disabled |
-| `Enter` | Confirm | Accept the currently selected (or first) item |
+| Keymap         | Action               | Description                                        |
+| -------------- | -------------------- | -------------------------------------------------- |
+| `Ctrl + Up`    | Select previous item | Move up in the completion menu                     |
+| `Ctrl + Down`  | Select next item     | Move down in the completion menu                   |
+| `Ctrl + b`     | Scroll docs up       | Scroll the documentation window up                 |
+| `Ctrl + f`     | Scroll docs down     | Scroll the documentation window down               |
+| `Ctrl + Space` | Trigger completion   | Manually open the completion menu                  |
+| `Ctrl + e`     | Abort/close          | Close the completion menu                          |
+| `Ctrl + y`     | Disabled             | The default `<C-y>` mapping is explicitly disabled |
+| `Enter`        | Confirm              | Accept the currently selected (or first) item      |
 
 **Formatting:** Each completion item shows:
+
 1. A **kind icon** (e.g., `󰊕` for Function, `󰀫` for Variable, `` for Class)
 2. The **abbreviation** (the actual text to insert)
 3. A **source label** (`[LSP]`, `[Snippet]`, `[Buffer]`, `[Path]`)
 
 **Kind icons reference:**
 
-| Kind | Icon | Kind | Icon |
-|------|------|------|------|
-| Text | `󰉿` | Method | `󰆧` |
-| Function | `󰊕` | Constructor | `` |
-| Field | ` ` | Variable | `󰀫` |
-| Class | `󰠱` | Interface | `` |
-| Module | `` | Property | `󰜢` |
-| Unit | `󰑭` | Value | `󰎠` |
-| Enum | `` | Keyword | `󰌋` |
-| Snippet | `` | Color | `󰏘` |
-| File | `󰈙` | Reference | `` |
-| Folder | `󰉋` | EnumMember | `` |
-| Constant | `󰏿` | Struct | `` |
-| Event | `` | Operator | `󰆕` |
-| TypeParameter | ` ` | Misc | ` ` |
+| Kind          | Icon | Kind        | Icon |
+| ------------- | ---- | ----------- | ---- |
+| Text          | `󰉿`  | Method      | `󰆧`  |
+| Function      | `󰊕`  | Constructor | ``   |
+| Field         | ` `  | Variable    | `󰀫`  |
+| Class         | `󰠱`  | Interface   | ``   |
+| Module        | ``   | Property    | `󰜢`  |
+| Unit          | `󰑭`  | Value       | `󰎠`  |
+| Enum          | ``   | Keyword     | `󰌋`  |
+| Snippet       | ``   | Color       | `󰏘`  |
+| File          | `󰈙`  | Reference   | ``   |
+| Folder        | `󰉋`  | EnumMember  | ``   |
+| Constant      | `󰏿`  | Struct      | ``   |
+| Event         | ``   | Operator    | `󰆕`  |
+| TypeParameter | ` `  | Misc        | ` `  |
 
 **Window styling:**
+
 - Completion popup: Bordered window
 - Documentation popup: Custom Unicode box-drawing border (`╭─╮│╯─╰│`)
 
@@ -713,16 +685,17 @@ Treesitter provides **AST-based syntax highlighting** (much more accurate than r
 
 **Configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `sync_install` | `false` | Parsers install asynchronously (non-blocking) |
-| `auto_install` | `true` | Missing parsers are installed automatically when you open a file |
-| `highlight.enable` | `true` | Treesitter-based syntax highlighting is active |
-| `highlight.additional_vim_regex_highlighting` | `false` | Disables legacy regex highlighting (better performance) |
-| `indent.enable` | `true` | Treesitter-based smart indentation |
-| `autotag.enable` | `true` | Automatic HTML/JSX tag closing and renaming (via `nvim-ts-autotag`) |
+| Setting                                       | Value   | Description                                                         |
+| --------------------------------------------- | ------- | ------------------------------------------------------------------- |
+| `sync_install`                                | `false` | Parsers install asynchronously (non-blocking)                       |
+| `auto_install`                                | `true`  | Missing parsers are installed automatically when you open a file    |
+| `highlight.enable`                            | `true`  | Treesitter-based syntax highlighting is active                      |
+| `highlight.additional_vim_regex_highlighting` | `false` | Disables legacy regex highlighting (better performance)             |
+| `indent.enable`                               | `true`  | Treesitter-based smart indentation                                  |
+| `autotag.enable`                              | `true`  | Automatic HTML/JSX tag closing and renaming (via `nvim-ts-autotag`) |
 
 **Highlight disable conditions:**
+
 - Files larger than **100 KB** fall back to regex highlighting (performance safeguard)
 - **LaTeX** (`latex`) files are excluded from Treesitter highlighting
 
@@ -732,10 +705,10 @@ Treesitter provides **AST-based syntax highlighting** (much more accurate than r
 
 **Incremental selection keymaps:**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
+| Keymap         | Action                  | Description                                             |
+| -------------- | ----------------------- | ------------------------------------------------------- |
 | `Ctrl + Space` | Init / expand selection | Start selecting the current node, then expand to parent |
-| `Backspace` | Shrink selection | Shrink the selection to the child node |
+| `Backspace`    | Shrink selection        | Shrink the selection to the child node                  |
 
 ---
 
@@ -746,16 +719,16 @@ Treesitter provides **AST-based syntax highlighting** (much more accurate than r
 
 Shows the function/class/block header at the top of the window when you scroll past it. For example, if you're inside a long function, the function signature stays pinned at the top.
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `enable` | `true` | Plugin is active |
-| `max_lines` | `0` | No limit on how many context lines to show |
-| `min_window_height` | `0` | Active regardless of window size |
-| `line_numbers` | `true` | Context lines show their original line numbers |
-| `multiline_threshold` | `1` | Only 1 line per context level (keeps it compact) |
-| `trim_scope` | `"outer"` | If max_lines is exceeded, discard outer (parent) contexts first |
-| `mode` | `"cursor"` | Context is calculated based on cursor position |
-| `zindex` | `20` | Z-index ensures context renders above other floating elements |
+| Setting               | Value      | Description                                                     |
+| --------------------- | ---------- | --------------------------------------------------------------- |
+| `enable`              | `true`     | Plugin is active                                                |
+| `max_lines`           | `0`        | No limit on how many context lines to show                      |
+| `min_window_height`   | `0`        | Active regardless of window size                                |
+| `line_numbers`        | `true`     | Context lines show their original line numbers                  |
+| `multiline_threshold` | `1`        | Only 1 line per context level (keeps it compact)                |
+| `trim_scope`          | `"outer"`  | If max_lines is exceeded, discard outer (parent) contexts first |
+| `mode`                | `"cursor"` | Context is calculated based on cursor position                  |
+| `zindex`              | `20`       | Z-index ensures context renders above other floating elements   |
 
 ---
 
@@ -775,10 +748,12 @@ Colors matching brackets/parentheses/braces with different colors based on nesti
 7. Cyan
 
 **Strategy:**
+
 - Default: `global` strategy (highlights all delimiters in the file)
 - Vim filetypes: `local` strategy (only highlights near the cursor)
 
 **Query:**
+
 - Default: `rainbow-delimiters` (standard parentheses/brackets)
 - Lua and Bash: `rainbow-blocks` (highlights block structures like `do...end`, `if...fi`)
 
@@ -794,6 +769,7 @@ Colors matching brackets/parentheses/braces with different colors based on nesti
 Trouble provides a structured, interactive list view for diagnostics, quickfix items, location lists, and TODOs.
 
 **Configuration:**
+
 - `position = "bottom"` - The panel opens at the bottom of the screen
 - `diagnostics.auto_open = true` - Trouble opens automatically when there are diagnostics
 - `diagnostics.auto_close = false` - Trouble stays open even when diagnostics are resolved
@@ -801,13 +777,13 @@ Trouble provides a structured, interactive list view for diagnostics, quickfix i
 
 **Keymaps:**
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `<leader>xx` | `Trouble diagnostics toggle` | Toggle the diagnostics list |
-| `<leader>xw` | `Trouble diagnostics toggle_preview` | Toggle diagnostics with preview |
+| Keymap       | Action                                    | Description                                |
+| ------------ | ----------------------------------------- | ------------------------------------------ |
+| `<leader>xx` | `Trouble diagnostics toggle`              | Toggle the diagnostics list                |
+| `<leader>xw` | `Trouble diagnostics toggle_preview`      | Toggle diagnostics with preview            |
 | `<leader>xd` | `Trouble diagnostics toggle filter.buf=0` | Toggle diagnostics for current buffer only |
-| `<leader>xq` | `Trouble qflist toggle` | Toggle quickfix list in Trouble |
-| `<leader>xl` | `Trouble loclist toggle` | Toggle location list in Trouble |
+| `<leader>xq` | `Trouble qflist toggle`                   | Toggle quickfix list in Trouble            |
+| `<leader>xl` | `Trouble loclist toggle`                  | Toggle location list in Trouble            |
 
 ---
 
@@ -820,18 +796,19 @@ Shows Git diff signs in the sign column and provides a rich set of Git operation
 
 **Sign characters:**
 
-| Change Type | Sign | Description |
-|------------|------|-------------|
-| Added | `┃` | New lines added |
-| Changed | `┃` | Modified lines |
-| Deleted | `_` | Lines deleted below this point |
-| Top-delete | `‾` | Lines deleted above this point |
-| Change-delete | `~` | Lines changed and some deleted |
-| Untracked | `┆` | Lines in untracked files |
+| Change Type   | Sign | Description                    |
+| ------------- | ---- | ------------------------------ |
+| Added         | `┃`  | New lines added                |
+| Changed       | `┃`  | Modified lines                 |
+| Deleted       | `_`  | Lines deleted below this point |
+| Top-delete    | `‾`  | Lines deleted above this point |
+| Change-delete | `~`  | Lines changed and some deleted |
+| Untracked     | `┆`  | Lines in untracked files       |
 
 Staged changes use the same signs.
 
 **Configuration highlights:**
+
 - `signcolumn = true` - Signs are shown in the gutter
 - `current_line_blame = false` - Inline git blame is off by default (toggle with `<leader>tb`)
 - `current_line_blame_formatter` - Format: `author, time_ago - commit message`
@@ -843,41 +820,41 @@ Staged changes use the same signs.
 
 #### Navigation
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `]c` | Next hunk | Jump to the next changed hunk (or next diff change in diff mode) |
-| `[c` | Previous hunk | Jump to the previous changed hunk |
+| Keymap | Action        | Description                                                      |
+| ------ | ------------- | ---------------------------------------------------------------- |
+| `]c`   | Next hunk     | Jump to the next changed hunk (or next diff change in diff mode) |
+| `[c`   | Previous hunk | Jump to the previous changed hunk                                |
 
 #### Actions
 
-| Keymap | Mode | Action | Description |
-|--------|------|--------|-------------|
-| `<leader>hs` | Normal | `stage_hunk` | Stage the hunk under the cursor |
-| `<leader>hr` | Normal | `reset_hunk` | Reset the hunk under the cursor (discard changes) |
-| `<leader>hs` | Visual | `stage_hunk` (selection) | Stage the selected lines |
-| `<leader>hr` | Visual | `reset_hunk` (selection) | Reset the selected lines |
-| `<leader>hS` | Normal | `stage_buffer` | Stage the entire buffer (like `git add %`) |
-| `<leader>hR` | Normal | `reset_buffer` | Reset the entire buffer |
-| `<leader>hp` | Normal | `preview_hunk` | Preview the hunk in a floating window |
-| `<leader>hi` | Normal | `preview_hunk_inline` | Preview the hunk inline (below the line) |
-| `<leader>hb` | Normal | `blame_line` (full) | Show full git blame for the current line |
-| `<leader>hd` | Normal | `diffthis` | Open a diff split comparing the buffer with the index |
-| `<leader>hD` | Normal | `diffthis('~')` | Open a diff split comparing with the previous commit |
-| `<leader>hQ` | Normal | `setqflist('all')` | Send all hunks in the repo to the quickfix list |
-| `<leader>hq` | Normal | `setqflist` | Send hunks in the current buffer to the quickfix list |
+| Keymap       | Mode   | Action                   | Description                                           |
+| ------------ | ------ | ------------------------ | ----------------------------------------------------- |
+| `<leader>hs` | Normal | `stage_hunk`             | Stage the hunk under the cursor                       |
+| `<leader>hr` | Normal | `reset_hunk`             | Reset the hunk under the cursor (discard changes)     |
+| `<leader>hs` | Visual | `stage_hunk` (selection) | Stage the selected lines                              |
+| `<leader>hr` | Visual | `reset_hunk` (selection) | Reset the selected lines                              |
+| `<leader>hS` | Normal | `stage_buffer`           | Stage the entire buffer (like `git add %`)            |
+| `<leader>hR` | Normal | `reset_buffer`           | Reset the entire buffer                               |
+| `<leader>hp` | Normal | `preview_hunk`           | Preview the hunk in a floating window                 |
+| `<leader>hi` | Normal | `preview_hunk_inline`    | Preview the hunk inline (below the line)              |
+| `<leader>hb` | Normal | `blame_line` (full)      | Show full git blame for the current line              |
+| `<leader>hd` | Normal | `diffthis`               | Open a diff split comparing the buffer with the index |
+| `<leader>hD` | Normal | `diffthis('~')`          | Open a diff split comparing with the previous commit  |
+| `<leader>hQ` | Normal | `setqflist('all')`       | Send all hunks in the repo to the quickfix list       |
+| `<leader>hq` | Normal | `setqflist`              | Send hunks in the current buffer to the quickfix list |
 
 #### Toggles
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `<leader>tb` | `toggle_current_line_blame` | Toggle inline git blame on/off |
-| `<leader>tw` | `toggle_word_diff` | Toggle word-level diff highlighting |
+| Keymap       | Action                      | Description                         |
+| ------------ | --------------------------- | ----------------------------------- |
+| `<leader>tb` | `toggle_current_line_blame` | Toggle inline git blame on/off      |
+| `<leader>tw` | `toggle_word_diff`          | Toggle word-level diff highlighting |
 
 #### Text Object
 
-| Keymap | Mode | Action | Description |
-|--------|------|--------|-------------|
-| `ih` | Operator-pending, Visual | `select_hunk` | Select the current hunk as a text object (e.g., `vih` to visually select a hunk, `dih` to delete it) |
+| Keymap | Mode                     | Action        | Description                                                                                          |
+| ------ | ------------------------ | ------------- | ---------------------------------------------------------------------------------------------------- |
+| `ih`   | Operator-pending, Visual | `select_hunk` | Select the current hunk as a text object (e.g., `vih` to visually select a hunk, `dih` to delete it) |
 
 ---
 
@@ -890,32 +867,32 @@ Provides a toggleable floating terminal window inside Neovim.
 
 **Configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `size` | `20` | Terminal height (for horizontal) or width (for vertical) |
-| `open_mapping` | `Ctrl + \` | Global keymap to toggle the terminal |
-| `direction` | `"float"` | Terminal opens as a centered floating window |
-| `float_opts.border` | `"curved"` | The floating window has curved/rounded borders |
-| `float_opts.winblend` | `0` | Fully opaque (no transparency) |
-| `hide_numbers` | `true` | Line numbers are hidden inside the terminal |
-| `shade_terminals` | `true` | Terminal background is slightly shaded |
-| `shading_factor` | `2` | Shading intensity |
-| `start_in_insert` | `true` | Terminal starts in insert mode (ready to type) |
-| `insert_mappings` | `true` | The toggle mapping works from insert mode too |
-| `persist_size` | `true` | Terminal remembers its size across toggles |
-| `close_on_exit` | `true` | Terminal window closes when the shell process exits |
-| `shell` | `vim.o.shell` | Uses the system's default shell |
+| Setting               | Value         | Description                                              |
+| --------------------- | ------------- | -------------------------------------------------------- |
+| `size`                | `20`          | Terminal height (for horizontal) or width (for vertical) |
+| `open_mapping`        | `Ctrl + \`    | Global keymap to toggle the terminal                     |
+| `direction`           | `"float"`     | Terminal opens as a centered floating window             |
+| `float_opts.border`   | `"curved"`    | The floating window has curved/rounded borders           |
+| `float_opts.winblend` | `0`           | Fully opaque (no transparency)                           |
+| `hide_numbers`        | `true`        | Line numbers are hidden inside the terminal              |
+| `shade_terminals`     | `true`        | Terminal background is slightly shaded                   |
+| `shading_factor`      | `2`           | Shading intensity                                        |
+| `start_in_insert`     | `true`        | Terminal starts in insert mode (ready to type)           |
+| `insert_mappings`     | `true`        | The toggle mapping works from insert mode too            |
+| `persist_size`        | `true`        | Terminal remembers its size across toggles               |
+| `close_on_exit`       | `true`        | Terminal window closes when the shell process exits      |
+| `shell`               | `vim.o.shell` | Uses the system's default shell                          |
 
 **Keymaps:**
 
-| Keymap | Mode | Action | Description |
-|--------|------|--------|-------------|
-| `Ctrl + \` | Any | `ToggleTerm` | Open/close the floating terminal |
-| `<leader>t` | Normal | `ToggleTerm` | Alternative toggle for the terminal |
-| `<leader>vl` | Normal | `ToggleTermCurrentLine` | Send the current line to the terminal |
-| `<leader>vv` | Normal | `ToggleTermVisualLines` | Send visual lines to the terminal |
-| `<leader>vs` | Normal | `ToggleTermVisualSelection` | Send visual selection to the terminal |
-| `Esc` | Terminal | Exit to normal mode | Switch from terminal insert mode to normal mode |
+| Keymap       | Mode     | Action                      | Description                                     |
+| ------------ | -------- | --------------------------- | ----------------------------------------------- |
+| `Ctrl + \`   | Any      | `ToggleTerm`                | Open/close the floating terminal                |
+| `<leader>t`  | Normal   | `ToggleTerm`                | Alternative toggle for the terminal             |
+| `<leader>vl` | Normal   | `ToggleTermCurrentLine`     | Send the current line to the terminal           |
+| `<leader>vv` | Normal   | `ToggleTermVisualLines`     | Send visual lines to the terminal               |
+| `<leader>vs` | Normal   | `ToggleTermVisualSelection` | Send visual selection to the terminal           |
+| `Esc`        | Terminal | Exit to normal mode         | Switch from terminal insert mode to normal mode |
 
 ---
 
@@ -939,14 +916,14 @@ Shows a startup dashboard when Neovim opens without any file arguments. Uses the
 
 **Dashboard buttons:**
 
-| Shortcut | Icon | Label | Action |
-|----------|------|-------|--------|
-| `e` | `` | New File | Create a new empty buffer |
-| `SPC ee` | `` | Toggle file explorer | Open NvimTree |
-| `SPC ff` | `` | Find File | Open Telescope file finder |
-| `SPC fs` | `` | Find Word | Open Telescope live grep |
-| `SPC wr` | `` | Restore Session | Restore the previous session for the current directory |
-| `q` | `` | Quit NVIM | Exit Neovim |
+| Shortcut | Icon | Label                | Action                                                 |
+| -------- | ---- | -------------------- | ------------------------------------------------------ |
+| `e`      | ``   | New File             | Create a new empty buffer                              |
+| `SPC ee` | ``   | Toggle file explorer | Open NvimTree                                          |
+| `SPC ff` | ``   | Find File            | Open Telescope file finder                             |
+| `SPC fs` | ``   | Find Word            | Open Telescope live grep                               |
+| `SPC wr` | ``   | Restore Session      | Restore the previous session for the current directory |
+| `q`      | ``   | Quit NVIM            | Exit Neovim                                            |
 
 Folding is disabled on the alpha buffer via an autocmd.
 
@@ -961,25 +938,25 @@ Replaces Neovim's default `vim.notify()` with a beautiful animated notification 
 
 **Configuration:**
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `stages` | `"fade_in_slide_out"` | Notifications fade in and slide out |
-| `render` | `"minimal"` | Compact notification style |
-| `timeout` | `4000` | Notifications disappear after 4 seconds |
-| `background_colour` | `"FloatShadow"` | Background inherits from the FloatShadow highlight group |
-| `minimum_width` | `50` | Notifications are at least 50 characters wide |
-| `top_down` | `false` | Notifications stack from the bottom up |
-| `level` | `3` | Minimum level is WARN (filters out DEBUG and INFO noise) |
+| Setting             | Value                 | Description                                              |
+| ------------------- | --------------------- | -------------------------------------------------------- |
+| `stages`            | `"fade_in_slide_out"` | Notifications fade in and slide out                      |
+| `render`            | `"minimal"`           | Compact notification style                               |
+| `timeout`           | `4000`                | Notifications disappear after 4 seconds                  |
+| `background_colour` | `"FloatShadow"`       | Background inherits from the FloatShadow highlight group |
+| `minimum_width`     | `50`                  | Notifications are at least 50 characters wide            |
+| `top_down`          | `false`               | Notifications stack from the bottom up                   |
+| `level`             | `3`                   | Minimum level is WARN (filters out DEBUG and INFO noise) |
 
 **Notification icons:**
 
 | Level | Icon |
-|-------|------|
-| ERROR | `` |
-| WARN | `` |
-| INFO | `` |
-| DEBUG | `` |
-| TRACE | `✎` |
+| ----- | ---- |
+| ERROR | ``   |
+| WARN  | ``   |
+| INFO  | ``   |
+| DEBUG | ``   |
+| TRACE | `✎`  |
 
 The plugin is set to `lazy = false` with `priority = 1000` to ensure it loads immediately before other plugins, so all notifications from startup are captured.
 
@@ -993,23 +970,24 @@ The plugin is set to `lazy = false` with `priority = 1000` to ensure it loads im
 Smart commenting with treesitter integration. The `nvim-ts-context-commentstring` integration ensures that in mixed-language files (like JSX/TSX, Vue, Svelte), the correct comment style is used for each section.
 
 For example, in a `.tsx` file:
+
 - JavaScript code: `// comment`
 - JSX markup: `{/* comment */}`
 - CSS in styled-components: `/* comment */`
 
 **Default keymaps (provided by Comment.nvim):**
 
-| Keymap | Mode | Action |
-|--------|------|--------|
-| `gcc` | Normal | Toggle line comment for the current line |
-| `gbc` | Normal | Toggle block comment for the current line |
+| Keymap        | Mode   | Action                                                               |
+| ------------- | ------ | -------------------------------------------------------------------- |
+| `gcc`         | Normal | Toggle line comment for the current line                             |
+| `gbc`         | Normal | Toggle block comment for the current line                            |
 | `gc` + motion | Normal | Toggle line comment over a motion (e.g., `gcip` = comment paragraph) |
-| `gb` + motion | Normal | Toggle block comment over a motion |
-| `gc` | Visual | Toggle line comment for the selection |
-| `gb` | Visual | Toggle block comment for the selection |
-| `gcO` | Normal | Add comment on the line above |
-| `gco` | Normal | Add comment on the line below |
-| `gcA` | Normal | Add comment at the end of the current line |
+| `gb` + motion | Normal | Toggle block comment over a motion                                   |
+| `gc`          | Visual | Toggle line comment for the selection                                |
+| `gb`          | Visual | Toggle block comment for the selection                               |
+| `gcO`         | Normal | Add comment on the line above                                        |
+| `gco`         | Normal | Add comment on the line below                                        |
+| `gcA`         | Normal | Add comment at the end of the current line                           |
 
 ---
 
@@ -1022,36 +1000,38 @@ Provides automatic code formatting on save and manual formatting via a keymap.
 
 **Formatters by filetype:**
 
-| Filetype | Formatter(s) |
-|----------|-------------|
-| JavaScript | Prettier |
-| TypeScript | Prettier |
-| JavaScript React (JSX) | Prettier |
-| TypeScript React (TSX) | Prettier |
-| Svelte | Prettier |
-| CSS | Prettier |
-| HTML | Prettier |
-| JSON | Prettier |
-| YAML | Prettier |
-| Markdown | Prettier |
-| GraphQL | Prettier |
-| Liquid | Prettier |
-| Lua | StyLua |
-| Python | isort (import sorting) + black (code formatting), run sequentially |
+| Filetype               | Formatter(s)                                                       |
+| ---------------------- | ------------------------------------------------------------------ |
+| JavaScript             | Prettier                                                           |
+| TypeScript             | Prettier                                                           |
+| JavaScript React (JSX) | Prettier                                                           |
+| TypeScript React (TSX) | Prettier                                                           |
+| Svelte                 | Prettier                                                           |
+| CSS                    | Prettier                                                           |
+| HTML                   | Prettier                                                           |
+| JSON                   | Prettier                                                           |
+| YAML                   | Prettier                                                           |
+| Markdown               | Prettier                                                           |
+| GraphQL                | Prettier                                                           |
+| Liquid                 | Prettier                                                           |
+| Lua                    | StyLua                                                             |
+| Python                 | isort (import sorting) + black (code formatting), run sequentially |
 
 **Format on save:**
+
 - `lsp_fallback = true` - If no formatter is configured, use the LSP's formatter
 - `async = false` - Formatting is synchronous (blocks until done, ensures file is saved formatted)
 - `timeout_ms = 3000` - 3-second timeout to prevent hanging
 
 **StyLua configuration** (`.stylua.toml`):
+
 - Indent type: Spaces
 - Indent width: 2
 
 **Keymaps:**
 
-| Keymap | Mode | Action | Description |
-|--------|------|--------|-------------|
+| Keymap       | Mode           | Action | Description                                                |
+| ------------ | -------------- | ------ | ---------------------------------------------------------- |
 | `<leader>mp` | Normal, Visual | Format | Format the entire file (normal) or selected range (visual) |
 
 ---
@@ -1064,13 +1044,13 @@ Loaded with `config = true` (default configuration). Provides keybindings to add
 
 **Default keymaps:**
 
-| Keymap | Mode | Action | Example |
-|--------|------|--------|---------|
-| `ys` + motion + char | Normal | Add surrounding | `ysiw"` surrounds a word with `"` |
-| `yss` + char | Normal | Surround entire line | `yss)` wraps the line in `()` |
-| `ds` + char | Normal | Delete surrounding | `ds"` removes surrounding `"` |
-| `cs` + old + new | Normal | Change surrounding | `cs"'` changes `"` to `'` |
-| `S` + char | Visual | Surround selection | Select text, press `S"` to wrap in `"` |
+| Keymap               | Mode   | Action               | Example                                |
+| -------------------- | ------ | -------------------- | -------------------------------------- |
+| `ys` + motion + char | Normal | Add surrounding      | `ysiw"` surrounds a word with `"`      |
+| `yss` + char         | Normal | Surround entire line | `yss)` wraps the line in `()`          |
+| `ds` + char          | Normal | Delete surrounding   | `ds"` removes surrounding `"`          |
+| `cs` + old + new     | Normal | Change surrounding   | `cs"'` changes `"` to `'`              |
+| `S` + char           | Visual | Surround selection   | Select text, press `S"` to wrap in `"` |
 
 ---
 
@@ -1079,6 +1059,7 @@ Loaded with `config = true` (default configuration). Provides keybindings to add
 **Plugin:** [stevearc/dressing.nvim](https://github.com/stevearc/dressing.nvim)
 
 Loaded on `VeryLazy` event. Replaces the default `vim.ui.select()` and `vim.ui.input()` with much better-looking floating windows. This improves the UI for:
+
 - Code action selection (`<leader>ca`)
 - LSP rename input (`<leader>rn`)
 - Any plugin that uses `vim.ui.select` or `vim.ui.input`
@@ -1095,192 +1076,192 @@ No custom configuration; uses sensible defaults.
 
 These are Neovim's built-in keybindings that are always available:
 
-| Keymap | Mode | Action |
-|--------|------|--------|
-| `i` | Normal | Enter Insert mode |
-| `v` | Normal | Enter Visual mode |
-| `V` | Normal | Enter Visual Line mode |
-| `Ctrl + v` | Normal | Enter Visual Block mode |
-| `Esc` | Insert | Return to Normal mode |
-| `u` | Normal | Undo |
-| `Ctrl + r` | Normal | Redo |
-| `.` | Normal | Repeat last change |
-| `:w` | Command | Save file |
-| `:q` | Command | Quit |
-| `:wq` or `ZZ` | Command/Normal | Save and quit |
-| `:q!` or `ZQ` | Command/Normal | Quit without saving |
-| `/pattern` | Normal | Search forward |
-| `?pattern` | Normal | Search backward |
-| `n` / `N` | Normal | Next / previous search match |
-| `*` / `#` | Normal | Search word under cursor forward / backward |
-| `gg` | Normal | Go to first line |
-| `G` | Normal | Go to last line |
-| `{number}G` | Normal | Go to line number |
-| `0` / `$` | Normal | Go to start / end of line |
-| `^` | Normal | Go to first non-blank character |
-| `w` / `b` | Normal | Next / previous word |
-| `e` | Normal | End of current word |
-| `%` | Normal | Jump to matching bracket |
-| `dd` | Normal | Delete line |
-| `yy` | Normal | Yank (copy) line |
-| `p` / `P` | Normal | Paste after / before cursor |
-| `>>` / `<<` | Normal | Indent / unindent line |
-| `Ctrl + w + h/j/k/l` | Normal | Navigate between splits |
-| `Ctrl + w + v` | Normal | Create vertical split |
-| `Ctrl + w + s` | Normal | Create horizontal split |
-| `Ctrl + w + q` | Normal | Close current split |
-| `Ctrl + u` / `Ctrl + d` | Normal | Scroll half page up / down |
-| `Ctrl + f` / `Ctrl + b` | Normal | Scroll full page down / up |
-| `zz` | Normal | Center current line on screen |
+| Keymap                  | Mode           | Action                                      |
+| ----------------------- | -------------- | ------------------------------------------- |
+| `i`                     | Normal         | Enter Insert mode                           |
+| `v`                     | Normal         | Enter Visual mode                           |
+| `V`                     | Normal         | Enter Visual Line mode                      |
+| `Ctrl + v`              | Normal         | Enter Visual Block mode                     |
+| `Esc`                   | Insert         | Return to Normal mode                       |
+| `u`                     | Normal         | Undo                                        |
+| `Ctrl + r`              | Normal         | Redo                                        |
+| `.`                     | Normal         | Repeat last change                          |
+| `:w`                    | Command        | Save file                                   |
+| `:q`                    | Command        | Quit                                        |
+| `:wq` or `ZZ`           | Command/Normal | Save and quit                               |
+| `:q!` or `ZQ`           | Command/Normal | Quit without saving                         |
+| `/pattern`              | Normal         | Search forward                              |
+| `?pattern`              | Normal         | Search backward                             |
+| `n` / `N`               | Normal         | Next / previous search match                |
+| `*` / `#`               | Normal         | Search word under cursor forward / backward |
+| `gg`                    | Normal         | Go to first line                            |
+| `G`                     | Normal         | Go to last line                             |
+| `{number}G`             | Normal         | Go to line number                           |
+| `0` / `$`               | Normal         | Go to start / end of line                   |
+| `^`                     | Normal         | Go to first non-blank character             |
+| `w` / `b`               | Normal         | Next / previous word                        |
+| `e`                     | Normal         | End of current word                         |
+| `%`                     | Normal         | Jump to matching bracket                    |
+| `dd`                    | Normal         | Delete line                                 |
+| `yy`                    | Normal         | Yank (copy) line                            |
+| `p` / `P`               | Normal         | Paste after / before cursor                 |
+| `>>` / `<<`             | Normal         | Indent / unindent line                      |
+| `Ctrl + w + h/j/k/l`    | Normal         | Navigate between splits                     |
+| `Ctrl + w + v`          | Normal         | Create vertical split                       |
+| `Ctrl + w + s`          | Normal         | Create horizontal split                     |
+| `Ctrl + w + q`          | Normal         | Close current split                         |
+| `Ctrl + u` / `Ctrl + d` | Normal         | Scroll half page up / down                  |
+| `Ctrl + f` / `Ctrl + b` | Normal         | Scroll full page down / up                  |
+| `zz`                    | Normal         | Center current line on screen               |
 
 ### File Explorer (NvimTree)
 
-| Keymap | Description |
-|--------|-------------|
-| `<leader>ee` | Open/focus file explorer |
+| Keymap       | Description                          |
+| ------------ | ------------------------------------ |
+| `<leader>ee` | Open/focus file explorer             |
 | `<leader>ef` | Toggle file explorer on current file |
-| `<leader>ec` | Collapse all directories |
-| `<leader>er` | Refresh file explorer |
+| `<leader>ec` | Collapse all directories             |
+| `<leader>er` | Refresh file explorer                |
 
 ### Telescope (Fuzzy Finding)
 
-| Keymap | Description |
-|--------|-------------|
-| `<leader>ff` | Find files |
+| Keymap       | Description                          |
+| ------------ | ------------------------------------ |
+| `<leader>ff` | Find files                           |
 | `<leader>fg` | Live grep (search text in all files) |
-| `<leader>fb` | Find open buffers |
-| `<leader>fh` | Search help tags |
-| `<leader>fp` | Find planets (easter egg) |
-| `<leader>gc` | Browse git commits |
+| `<leader>fb` | Find open buffers                    |
+| `<leader>fh` | Search help tags                     |
+| `<leader>fp` | Find planets (easter egg)            |
+| `<leader>gc` | Browse git commits                   |
 
 ### Buffers (Barbar)
 
-| Keymap | Description |
-|--------|-------------|
-| `Alt + ,` | Previous buffer |
-| `Alt + .` | Next buffer |
-| `Alt + <` | Move buffer left |
-| `Alt + >` | Move buffer right |
-| `<leader>1`-`9` | Go to buffer 1-9 |
-| `<leader>0` | Go to last buffer |
-| `Alt + p` | Pin/unpin buffer |
-| `Alt + c` | Close buffer |
-| `Ctrl + p` | Pick buffer (magic mode) |
-| `<Space>bb` | Sort by buffer number |
-| `<Space>bd` | Sort by directory |
-| `<Space>bl` | Sort by language |
-| `<Space>bw` | Sort by window number |
+| Keymap          | Description              |
+| --------------- | ------------------------ |
+| `Alt + ,`       | Previous buffer          |
+| `Alt + .`       | Next buffer              |
+| `Alt + <`       | Move buffer left         |
+| `Alt + >`       | Move buffer right        |
+| `<leader>1`-`9` | Go to buffer 1-9         |
+| `<leader>0`     | Go to last buffer        |
+| `Alt + p`       | Pin/unpin buffer         |
+| `Alt + c`       | Close buffer             |
+| `Ctrl + p`      | Pick buffer (magic mode) |
+| `<Space>bb`     | Sort by buffer number    |
+| `<Space>bd`     | Sort by directory        |
+| `<Space>bl`     | Sort by language         |
+| `<Space>bw`     | Sort by window number    |
 
 ### Buffers (Bufferline)
 
-| Keymap | Description |
-|--------|-------------|
-| `<leader>bn` | Next buffer |
-| `<leader>bp` | Previous buffer |
+| Keymap       | Description          |
+| ------------ | -------------------- |
+| `<leader>bn` | Next buffer          |
+| `<leader>bp` | Previous buffer      |
 | `<leader>bc` | Close current buffer |
 
 ### LSP
 
-| Keymap | Description |
-|--------|-------------|
-| `gR` | Show references (Telescope) |
-| `gD` | Go to declaration |
-| `gd` | Show definitions (Telescope) |
-| `gi` | Show implementations (Telescope) |
-| `gt` | Show type definitions (Telescope) |
-| `K` | Hover documentation |
-| `<leader>ca` | Code actions |
-| `<leader>rn` | Rename symbol |
-| `<leader>D` | Buffer diagnostics (Telescope) |
-| `<leader>d` | Line diagnostics (float) |
-| `[d` / `]d` | Previous / next diagnostic |
-| `<leader>rs` | Restart LSP |
+| Keymap       | Description                       |
+| ------------ | --------------------------------- |
+| `gR`         | Show references (Telescope)       |
+| `gD`         | Go to declaration                 |
+| `gd`         | Show definitions (Telescope)      |
+| `gi`         | Show implementations (Telescope)  |
+| `gt`         | Show type definitions (Telescope) |
+| `K`          | Hover documentation               |
+| `<leader>ca` | Code actions                      |
+| `<leader>rn` | Rename symbol                     |
+| `<leader>D`  | Buffer diagnostics (Telescope)    |
+| `<leader>d`  | Line diagnostics (float)          |
+| `[d` / `]d`  | Previous / next diagnostic        |
+| `<leader>rs` | Restart LSP                       |
 
 ### Autocompletion (nvim-cmp)
 
-| Keymap | Description |
-|--------|-------------|
-| `Ctrl + Up` | Previous suggestion |
-| `Ctrl + Down` | Next suggestion |
-| `Ctrl + Space` | Trigger completion |
+| Keymap                  | Description           |
+| ----------------------- | --------------------- |
+| `Ctrl + Up`             | Previous suggestion   |
+| `Ctrl + Down`           | Next suggestion       |
+| `Ctrl + Space`          | Trigger completion    |
 | `Ctrl + b` / `Ctrl + f` | Scroll docs up / down |
-| `Ctrl + e` | Close completion |
-| `Enter` | Confirm selection |
+| `Ctrl + e`              | Close completion      |
+| `Enter`                 | Confirm selection     |
 
 ### Treesitter
 
-| Keymap | Description |
-|--------|-------------|
+| Keymap         | Description                       |
+| -------------- | --------------------------------- |
 | `Ctrl + Space` | Init/expand incremental selection |
-| `Backspace` | Shrink incremental selection |
+| `Backspace`    | Shrink incremental selection      |
 
 ### Git (Gitsigns)
 
-| Keymap | Description |
-|--------|-------------|
-| `]c` / `[c` | Next / previous hunk |
-| `<leader>hs` | Stage hunk |
-| `<leader>hr` | Reset hunk |
-| `<leader>hS` | Stage entire buffer |
-| `<leader>hR` | Reset entire buffer |
-| `<leader>hp` | Preview hunk |
-| `<leader>hi` | Preview hunk inline |
-| `<leader>hb` | Blame line (full) |
-| `<leader>hd` | Diff against index |
+| Keymap       | Description                  |
+| ------------ | ---------------------------- |
+| `]c` / `[c`  | Next / previous hunk         |
+| `<leader>hs` | Stage hunk                   |
+| `<leader>hr` | Reset hunk                   |
+| `<leader>hS` | Stage entire buffer          |
+| `<leader>hR` | Reset entire buffer          |
+| `<leader>hp` | Preview hunk                 |
+| `<leader>hi` | Preview hunk inline          |
+| `<leader>hb` | Blame line (full)            |
+| `<leader>hd` | Diff against index           |
 | `<leader>hD` | Diff against previous commit |
-| `<leader>hq` | Hunks to quickfix (buffer) |
-| `<leader>hQ` | Hunks to quickfix (all) |
-| `<leader>tb` | Toggle line blame |
-| `<leader>tw` | Toggle word diff |
-| `ih` | Select hunk (text object) |
+| `<leader>hq` | Hunks to quickfix (buffer)   |
+| `<leader>hQ` | Hunks to quickfix (all)      |
+| `<leader>tb` | Toggle line blame            |
+| `<leader>tw` | Toggle word diff             |
+| `ih`         | Select hunk (text object)    |
 
 ### Diagnostics (Trouble)
 
-| Keymap | Description |
-|--------|-------------|
-| `<leader>xx` | Toggle diagnostics list |
-| `<leader>xw` | Toggle diagnostics preview |
-| `<leader>xd` | Buffer diagnostics only |
-| `<leader>xq` | Toggle quickfix in Trouble |
+| Keymap       | Description                     |
+| ------------ | ------------------------------- |
+| `<leader>xx` | Toggle diagnostics list         |
+| `<leader>xw` | Toggle diagnostics preview      |
+| `<leader>xd` | Buffer diagnostics only         |
+| `<leader>xq` | Toggle quickfix in Trouble      |
 | `<leader>xl` | Toggle location list in Trouble |
 
 ### Terminal (ToggleTerm)
 
-| Keymap | Description |
-|--------|-------------|
-| `Ctrl + \` | Toggle floating terminal |
-| `<leader>t` | Toggle terminal |
-| `<leader>vl` | Send current line to terminal |
-| `<leader>vv` | Send visual lines to terminal |
-| `<leader>vs` | Send visual selection to terminal |
-| `Esc` (in terminal) | Exit terminal insert mode |
+| Keymap              | Description                       |
+| ------------------- | --------------------------------- |
+| `Ctrl + \`          | Toggle floating terminal          |
+| `<leader>t`         | Toggle terminal                   |
+| `<leader>vl`        | Send current line to terminal     |
+| `<leader>vv`        | Send visual lines to terminal     |
+| `<leader>vs`        | Send visual selection to terminal |
+| `Esc` (in terminal) | Exit terminal insert mode         |
 
 ### Formatting (Conform)
 
-| Keymap | Description |
-|--------|-------------|
+| Keymap       | Description                     |
+| ------------ | ------------------------------- |
 | `<leader>mp` | Format file or visual selection |
 
 ### Commenting (Comment.nvim)
 
-| Keymap | Mode | Description |
-|--------|------|-------------|
-| `gcc` | Normal | Toggle line comment |
-| `gbc` | Normal | Toggle block comment |
-| `gc` + motion | Normal | Comment over motion |
-| `gb` + motion | Normal | Block comment over motion |
-| `gc` | Visual | Toggle line comment on selection |
-| `gb` | Visual | Toggle block comment on selection |
+| Keymap        | Mode   | Description                       |
+| ------------- | ------ | --------------------------------- |
+| `gcc`         | Normal | Toggle line comment               |
+| `gbc`         | Normal | Toggle block comment              |
+| `gc` + motion | Normal | Comment over motion               |
+| `gb` + motion | Normal | Block comment over motion         |
+| `gc`          | Visual | Toggle line comment on selection  |
+| `gb`          | Visual | Toggle block comment on selection |
 
 ### Surround (nvim-surround)
 
-| Keymap | Mode | Description |
-|--------|------|-------------|
-| `ys` + motion + char | Normal | Add surrounding |
-| `yss` + char | Normal | Surround entire line |
-| `ds` + char | Normal | Delete surrounding |
-| `cs` + old + new | Normal | Change surrounding |
-| `S` + char | Visual | Surround selection |
+| Keymap               | Mode   | Description          |
+| -------------------- | ------ | -------------------- |
+| `ys` + motion + char | Normal | Add surrounding      |
+| `yss` + char         | Normal | Surround entire line |
+| `ds` + char          | Normal | Delete surrounding   |
+| `cs` + old + new     | Normal | Change surrounding   |
+| `S` + char           | Visual | Surround selection   |
 
 ---
 
@@ -1290,139 +1271,486 @@ For completeness, here is a reference of essential Neovim default keybindings or
 
 ### Motion
 
-| Keymap | Description |
-|--------|-------------|
-| `h` `j` `k` `l` | Left, Down, Up, Right |
-| `w` / `W` | Next word / WORD |
-| `b` / `B` | Previous word / WORD |
-| `e` / `E` | End of word / WORD |
-| `0` | Start of line |
-| `^` | First non-blank character |
-| `$` | End of line |
-| `gg` | First line of file |
-| `G` | Last line of file |
-| `{` / `}` | Previous / next paragraph |
-| `(` / `)` | Previous / next sentence |
-| `%` | Matching bracket |
-| `f{char}` | Jump to next {char} on the line |
-| `F{char}` | Jump to previous {char} on the line |
-| `t{char}` | Jump to before next {char} |
-| `T{char}` | Jump to after previous {char} |
-| `;` / `,` | Repeat / reverse last f/F/t/T |
-| `Ctrl+o` | Jump to older cursor position |
-| `Ctrl+i` | Jump to newer cursor position |
+| Keymap          | Description                         |
+| --------------- | ----------------------------------- |
+| `h` `j` `k` `l` | Left, Down, Up, Right               |
+| `w` / `W`       | Next word / WORD                    |
+| `b` / `B`       | Previous word / WORD                |
+| `e` / `E`       | End of word / WORD                  |
+| `0`             | Start of line                       |
+| `^`             | First non-blank character           |
+| `$`             | End of line                         |
+| `gg`            | First line of file                  |
+| `G`             | Last line of file                   |
+| `{` / `}`       | Previous / next paragraph           |
+| `(` / `)`       | Previous / next sentence            |
+| `%`             | Matching bracket                    |
+| `f{char}`       | Jump to next {char} on the line     |
+| `F{char}`       | Jump to previous {char} on the line |
+| `t{char}`       | Jump to before next {char}          |
+| `T{char}`       | Jump to after previous {char}       |
+| `;` / `,`       | Repeat / reverse last f/F/t/T       |
+| `Ctrl+o`        | Jump to older cursor position       |
+| `Ctrl+i`        | Jump to newer cursor position       |
 
 ### Editing
 
-| Keymap | Description |
-|--------|-------------|
-| `i` / `a` | Insert before / after cursor |
-| `I` / `A` | Insert at start / end of line |
-| `o` / `O` | Open line below / above |
-| `r{char}` | Replace single character |
-| `R` | Enter Replace mode |
-| `x` | Delete character under cursor |
-| `d{motion}` | Delete over motion |
-| `dd` | Delete entire line |
-| `D` | Delete to end of line |
-| `c{motion}` | Change over motion (delete + insert) |
-| `cc` | Change entire line |
-| `C` | Change to end of line |
-| `y{motion}` | Yank (copy) over motion |
-| `yy` | Yank entire line |
-| `p` / `P` | Paste after / before |
-| `J` | Join current and next line |
-| `~` | Toggle case of character |
-| `gu{motion}` | Lowercase over motion |
-| `gU{motion}` | Uppercase over motion |
-| `>>` / `<<` | Indent / unindent line |
-| `=` | Auto-indent (with motion) |
+| Keymap       | Description                          |
+| ------------ | ------------------------------------ |
+| `i` / `a`    | Insert before / after cursor         |
+| `I` / `A`    | Insert at start / end of line        |
+| `o` / `O`    | Open line below / above              |
+| `r{char}`    | Replace single character             |
+| `R`          | Enter Replace mode                   |
+| `x`          | Delete character under cursor        |
+| `d{motion}`  | Delete over motion                   |
+| `dd`         | Delete entire line                   |
+| `D`          | Delete to end of line                |
+| `c{motion}`  | Change over motion (delete + insert) |
+| `cc`         | Change entire line                   |
+| `C`          | Change to end of line                |
+| `y{motion}`  | Yank (copy) over motion              |
+| `yy`         | Yank entire line                     |
+| `p` / `P`    | Paste after / before                 |
+| `J`          | Join current and next line           |
+| `~`          | Toggle case of character             |
+| `gu{motion}` | Lowercase over motion                |
+| `gU{motion}` | Uppercase over motion                |
+| `>>` / `<<`  | Indent / unindent line               |
+| `=`          | Auto-indent (with motion)            |
 
 ### Marks & Registers
 
-| Keymap | Description |
-|--------|-------------|
-| `m{a-z}` | Set mark (local to buffer) |
-| `m{A-Z}` | Set mark (global across files) |
-| `` `{mark} `` | Jump to mark (exact position) |
-| `'{mark}` | Jump to mark (line) |
+| Keymap        | Description                               |
+| ------------- | ----------------------------------------- |
+| `m{a-z}`      | Set mark (local to buffer)                |
+| `m{A-Z}`      | Set mark (global across files)            |
+| `` `{mark} `` | Jump to mark (exact position)             |
+| `'{mark}`     | Jump to mark (line)                       |
 | `"{register}` | Use specific register for next yank/paste |
-| `""` | Default register |
-| `"0` | Yank register (last yanked text) |
-| `"+` | System clipboard register |
-| `":` | Last command register |
+| `""`          | Default register                          |
+| `"0`          | Yank register (last yanked text)          |
+| `"+`          | System clipboard register                 |
+| `":`          | Last command register                     |
 
 ### Visual Mode
 
-| Keymap | Description |
-|--------|-------------|
-| `v` | Character-wise visual |
-| `V` | Line-wise visual |
-| `Ctrl+v` | Block-wise visual |
-| `gv` | Re-select last visual selection |
-| `o` | Move to other end of selection |
+| Keymap   | Description                     |
+| -------- | ------------------------------- |
+| `v`      | Character-wise visual           |
+| `V`      | Line-wise visual                |
+| `Ctrl+v` | Block-wise visual               |
+| `gv`     | Re-select last visual selection |
+| `o`      | Move to other end of selection  |
 
 ### Window Management
 
-| Keymap | Description |
-|--------|-------------|
-| `Ctrl+w s` | Split horizontally |
-| `Ctrl+w v` | Split vertically |
-| `Ctrl+w h/j/k/l` | Move to split |
-| `Ctrl+w H/J/K/L` | Move split to edge |
-| `Ctrl+w =` | Equalize split sizes |
-| `Ctrl+w +/-` | Increase/decrease height |
-| `Ctrl+w >/<` | Increase/decrease width |
-| `Ctrl+w q` | Close window |
-| `Ctrl+w o` | Close all other windows |
-| `Ctrl+w T` | Move window to new tab |
+| Keymap           | Description              |
+| ---------------- | ------------------------ |
+| `Ctrl+w s`       | Split horizontally       |
+| `Ctrl+w v`       | Split vertically         |
+| `Ctrl+w h/j/k/l` | Move to split            |
+| `Ctrl+w H/J/K/L` | Move split to edge       |
+| `Ctrl+w =`       | Equalize split sizes     |
+| `Ctrl+w +/-`     | Increase/decrease height |
+| `Ctrl+w >/<`     | Increase/decrease width  |
+| `Ctrl+w q`       | Close window             |
+| `Ctrl+w o`       | Close all other windows  |
+| `Ctrl+w T`       | Move window to new tab   |
 
 ### Tabs
 
-| Keymap | Description |
-|--------|-------------|
-| `:tabnew` | Open new tab |
+| Keymap      | Description         |
+| ----------- | ------------------- |
+| `:tabnew`   | Open new tab        |
 | `gt` / `gT` | Next / previous tab |
-| `{n}gt` | Go to tab n |
-| `:tabclose` | Close current tab |
+| `{n}gt`     | Go to tab n         |
+| `:tabclose` | Close current tab   |
 
 ### Macros
 
-| Keymap | Description |
-|--------|-------------|
+| Keymap        | Description           |
+| ------------- | --------------------- |
 | `q{register}` | Start recording macro |
-| `q` | Stop recording |
-| `@{register}` | Play macro |
-| `@@` | Repeat last macro |
+| `q`           | Stop recording        |
+| `@{register}` | Play macro            |
+| `@@`          | Repeat last macro     |
 
 ---
 
 ## LSP Servers & Formatters
 
-### Installed Language Servers
+### What Is an LSP Server?
 
-| Server | Language | Key Features |
-|--------|----------|-------------|
-| **ts_ls** | TypeScript / JavaScript | Go to definition, references, rename, diagnostics, auto-imports |
-| **html** | HTML | Tag completion, formatting, embedded language support |
-| **cssls** | CSS / SCSS / LESS | Property completion, color preview, diagnostics |
-| **tailwindcss** | Tailwind CSS | Class name completion, color preview, hover docs |
-| **svelte** | Svelte | Full Svelte support with JS/TS change notifications |
-| **lua_ls** | Lua | Neovim API completion (`vim` global recognized), diagnostics |
-| **graphql** | GraphQL | Schema-aware completion, validation |
-| **emmet_ls** | HTML/CSS | Emmet abbreviation expansion (e.g., `div.container>ul>li*3`) |
-| **prismals** | Prisma | Schema completion, validation, formatting |
-| **pyright** | Python | Type checking, auto-imports, diagnostics |
-| **eslint** | JS/TS | Linting rules, auto-fix on save |
+**LSP** stands for **Language Server Protocol**. It is an open standard created by Microsoft that defines how code editors communicate with external programs called **language servers**. Each language server is a standalone process that deeply understands one programming language (or a family of related languages). It analyzes your code in real time and sends information back to the editor.
 
-### Installed Formatters
+Without LSP, Neovim is essentially a fast, modal text editor. **With LSP, it becomes a full IDE.** The language server provides:
 
-| Formatter | Languages | Description |
-|-----------|----------|-------------|
-| **Prettier** | JS, TS, JSX, TSX, Svelte, CSS, HTML, JSON, YAML, Markdown, GraphQL, Liquid | Opinionated code formatter |
-| **StyLua** | Lua | Lua code formatter (2-space indent configured) |
-| **isort** | Python | Sorts and organizes Python imports |
-| **black** | Python | Opinionated Python code formatter |
+| Feature                 | What It Does                                                     | Example                                                                                        |
+| ----------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Autocompletion**      | Suggests functions, variables, types, and properties as you type | Typing `document.get` suggests `getElementById`, `getElementsByClassName`, etc.                |
+| **Go to Definition**    | Jumps to where a function/variable/class was originally defined  | Press `gd` on a function call to jump to its implementation                                    |
+| **Find References**     | Shows every place in the project where a symbol is used          | Press `gR` on a function to see all callers                                                    |
+| **Hover Documentation** | Shows inline documentation for the symbol under the cursor       | Press `K` on `Array.map` to see its full documentation                                         |
+| **Diagnostics**         | Detects errors, warnings, and hints without running the code     | A red underline appears under `consol.log` (typo) with the message "Cannot find name 'consol'" |
+| **Rename**              | Renames a symbol across the entire project at once               | Press `<leader>rn` on a variable and type a new name - it updates everywhere                   |
+| **Code Actions**        | Suggests quick fixes and refactorings                            | "Add missing import", "Convert to arrow function", "Extract to variable"                       |
+| **Signature Help**      | Shows function parameter info as you type arguments              | When typing `fetch(`, shows `fetch(input: RequestInfo, init?: RequestInit): Promise<Response>` |
+| **Formatting**          | Reformats code according to language-specific rules              | Auto-indents, fixes spacing, adjusts line breaks                                               |
+
+**How it works in this config:**
+
+```
+You type code
+    │
+    v
+Neovim (nvim-lspconfig) ──── sends code ────> Language Server (e.g., ts_ls)
+                                                    │
+                                                    │ analyzes code
+                                                    v
+Neovim <──── sends results ──── Language Server
+  │
+  v
+You see: completions, errors, warnings, hover docs, etc.
+```
+
+The communication happens over **JSON-RPC** (a simple message protocol). Every keystroke, Neovim sends the updated code to the server, and the server replies with fresh diagnostics, completions, and other intelligence. This all happens in the background in milliseconds.
+
+**Why LSP instead of built-in language support?**
+
+Before LSP existed, every editor had to implement language support from scratch. VS Code had its own TypeScript analyzer, Vim had its own plugins, Sublime had its own system. This meant:
+
+- Each editor had different quality of language support
+- Language authors had to write plugins for every editor separately
+- N editors x M languages = N\*M implementations
+
+With LSP, language authors write **one** server, and it works in **every** editor that supports the protocol. Neovim, VS Code, Sublime Text, Emacs, Helix - they all speak the same protocol. This means:
+
+- Neovim gets the **same quality** of language intelligence as VS Code
+- N editors + M languages = M implementations (one per language)
+
+### Why These Specific Language Servers?
+
+This configuration is tailored for **full-stack web development** with additional support for systems programming and scripting. Here is why each server is included:
+
+| Server          | Language(s)             | Why It's Here                                                                                                                                                                                                                                                                              |
+| --------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **ts_ls**       | TypeScript / JavaScript | The core of modern web development. Provides type checking, auto-imports, refactoring, and full IntelliSense for `.ts`, `.tsx`, `.js`, `.jsx` files. This is the same language engine that powers VS Code's TypeScript support.                                                            |
+| **html**        | HTML                    | Essential for any web work. Provides tag completion, attribute suggestions, embedded CSS/JS support, and entity references. When you type `<div`, it suggests closing the tag.                                                                                                             |
+| **cssls**       | CSS / SCSS / LESS       | Handles stylesheets. Provides property name/value completion, color preview, selector validation, and `@import` resolution. Supports CSS preprocessors (SCSS, LESS) out of the box.                                                                                                        |
+| **tailwindcss** | Tailwind CSS            | If you use the Tailwind CSS utility framework, this server provides class name completion with color previews, hover documentation showing the generated CSS for each class, and lint warnings for conflicting utilities.                                                                  |
+| **svelte**      | Svelte                  | Full support for the Svelte framework (`.svelte` files). This server has a **custom configuration** in this setup: it listens for changes in `.js` and `.ts` files and notifies the Svelte server, ensuring that imported modules are re-analyzed when they change.                        |
+| **lua_ls**      | Lua                     | Since this entire Neovim configuration is written in Lua, this server is essential. It is configured with `vim` recognized as a global variable (so `vim.api`, `vim.opt`, etc. don't show errors) and `checkThirdParty = false` to avoid prompts about Neovim being a third-party library. |
+| **graphql**     | GraphQL                 | For projects using GraphQL APIs. Provides schema-aware completion, query validation, and hover docs. Configured with **extended filetypes** so it activates inside HTML, React components, CSS, Sass, SCSS, LESS, and Svelte files - not just `.graphql` files.                            |
+| **emmet_ls**    | HTML / CSS              | Emmet is a shorthand syntax for writing HTML and CSS. For example, typing `ul>li.item*3` and expanding it generates `<ul><li class="item"></li><li class="item"></li><li class="item"></li></ul>`. This server provides Emmet expansion as LSP completions.                                |
+| **prismals**    | Prisma ORM              | For projects using Prisma (a popular Node.js ORM for databases). Provides schema completion for `.prisma` files, model/field validation, and relation checking.                                                                                                                            |
+| **pyright**     | Python                  | Microsoft's Python type checker. Provides fast type inference, import resolution, type error detection, and comprehensive IntelliSense for Python projects. Faster and more accurate than the older `pylsp`.                                                                               |
+| **eslint**      | JavaScript / TypeScript | A linter (not a formatter). Detects code quality issues, potential bugs, and style violations based on configurable rules. Integrates with your project's `.eslintrc` configuration. Can auto-fix many issues via code actions.                                                            |
+
+### How to Manage LSP Servers
+
+#### Checking which servers are active
+
+Run `:LspInfo` in Neovim to see which LSP servers are currently attached to the buffer you're editing. It shows the server name, root directory, and capabilities.
+
+#### Installing new servers
+
+LSP servers are managed through **Mason**. To install a new server:
+
+1. Run `:Mason` to open the Mason UI
+2. Browse or search for the server you want (e.g., `rust_analyzer` for Rust)
+3. Press `i` to install it
+
+Then you need to tell Neovim to use it. Add the server name to the `ensure_installed` list in `lua/DuarteRS/plugins/mason.lua`:
+
+```lua
+mason_lspconfig.setup({
+    ensure_installed = {
+        "ts_ls",
+        "html",
+        -- ... existing servers ...
+        "rust_analyzer",  -- <-- add the new server here
+    },
+    handlers = {
+        -- The default handler will configure it automatically:
+        function(server_name)
+            lspconfig[server_name].setup({
+                capabilities = capabilities,
+            })
+        end,
+        -- If you need custom config, add a named handler:
+        ["rust_analyzer"] = function()
+            lspconfig["rust_analyzer"].setup({
+                capabilities = capabilities,
+                settings = {
+                    ["rust-analyzer"] = {
+                        checkOnSave = { command = "clippy" },
+                    },
+                },
+            })
+        end,
+    },
+})
+```
+
+#### Removing a server
+
+1. Remove the server name from the `ensure_installed` list in `mason.lua`
+2. Remove any custom handler for that server (if one exists)
+3. Run `:Mason`, find the server, and press `X` to uninstall it
+
+#### Restarting a server
+
+If an LSP server gets stuck or behaves incorrectly, press `<leader>rs` (mapped to `:LspRestart`) to restart all attached servers for the current buffer.
+
+#### Useful LSP commands
+
+| Command        | Description                                 |
+| -------------- | ------------------------------------------- |
+| `:LspInfo`     | Show active LSP servers and their status    |
+| `:LspStart`    | Start the LSP server for the current buffer |
+| `:LspStop`     | Stop the active LSP server                  |
+| `:LspRestart`  | Restart the LSP server                      |
+| `:Mason`       | Open the Mason package manager UI           |
+| `:MasonUpdate` | Update Mason's package registry             |
+| `:MasonLog`    | View Mason's installation logs              |
+
+---
+
+### What Are Formatters?
+
+**Formatters** are tools that automatically rewrite your code to follow consistent style rules. They don't change what your code **does** - they change how it **looks**. This includes:
+
+- **Indentation** (tabs vs spaces, indent width)
+- **Line breaks** (where to break long lines, trailing newlines)
+- **Spacing** (spaces around operators, after commas, inside brackets)
+- **Quotes** (single vs double quotes)
+- **Semicolons** (whether to include trailing semicolons in JS)
+- **Import order** (alphabetical, grouped by type)
+
+**Why use formatters?**
+
+1. **Consistency** - Every file in the project follows the same style, regardless of who wrote it
+2. **No style debates** - The formatter decides; the team doesn't need to argue about tabs vs spaces
+3. **Productivity** - You write code however you want, and the formatter fixes it on save. You never manually adjust indentation or spacing
+4. **Code review quality** - Diffs only show meaningful changes, not formatting noise
+
+**Formatters vs Linters:**
+
+|                   | Formatter                          | Linter                           |
+| ----------------- | ---------------------------------- | -------------------------------- |
+| **Purpose**       | Makes code look consistent         | Finds bugs and bad patterns      |
+| **Changes code?** | Yes (rewrites formatting)          | Usually no (reports issues)      |
+| **Example tools** | Prettier, Black, StyLua            | ESLint, Pylint, Luacheck         |
+| **Example fix**   | `const x=1+2` -> `const x = 1 + 2` | "Variable 'x' is never used"     |
+| **Opinionated?**  | Very (few or no config options)    | Configurable (hundreds of rules) |
+
+In this configuration, **formatting happens automatically on every save** via `conform.nvim`. You never need to think about it.
+
+### Installed Formatters (In-Depth)
+
+#### Prettier
+
+**Languages:** JavaScript, TypeScript, JSX, TSX, Svelte, CSS, HTML, JSON, YAML, Markdown, GraphQL, Liquid
+
+Prettier is the most popular code formatter in the JavaScript ecosystem. It is **opinionated by design** - it provides very few configuration options, which forces a consistent style across all projects.
+
+What Prettier does:
+
+```javascript
+// Before (your messy code):
+const user = {
+  name: "John",
+  age: 30,
+  hobbies: ["coding", "gaming", "reading"],
+  address: { city: "Lisbon", country: "Portugal" },
+};
+
+// After (Prettier formats it):
+const user = {
+  name: "John",
+  age: 30,
+  hobbies: ["coding", "gaming", "reading"],
+  address: {
+    city: "Lisbon",
+    country: "Portugal",
+  },
+};
+```
+
+Prettier can be configured per-project with a `.prettierrc` file in the project root. If none exists, it uses its defaults (80 char line width, 2-space indent, double quotes, trailing commas).
+
+#### StyLua
+
+**Language:** Lua
+
+The Lua formatter used for this Neovim configuration itself. Configured in `.stylua.toml`:
+
+```toml
+indent_type = "Spaces"
+indent_width = 2
+```
+
+What StyLua does:
+
+```lua
+-- Before:
+local x={a=1,    b=2,c=     3}
+for k,v in pairs(x) do print(k,v) end
+
+-- After:
+local x = { a = 1, b = 2, c = 3 }
+for k, v in pairs(x) do
+  print(k, v)
+end
+```
+
+#### isort
+
+**Language:** Python (import sorting only)
+
+isort **only** handles Python imports. It sorts them alphabetically and groups them into sections following PEP 8 conventions:
+
+```python
+# Before:
+import os
+from django.conf import settings
+import sys
+from myapp.models import User
+import json
+from django.db import models
+
+# After (isort):
+import json
+import os
+import sys
+
+from django.conf import settings
+from django.db import models
+
+from myapp.models import User
+```
+
+The groups are: 1) Standard library, 2) Third-party packages, 3) Local project imports, separated by blank lines.
+
+#### Black
+
+**Language:** Python (code formatting)
+
+Black is Python's equivalent of Prettier - an opinionated formatter with almost no configuration. It calls itself "The Uncompromising Code Formatter."
+
+```python
+# Before:
+def calculate(x,y,z):
+    result=x+y*z
+    if result>100:
+        return    result
+    else:
+        return result*2
+
+# After (Black):
+def calculate(x, y, z):
+    result = x + y * z
+    if result > 100:
+        return result
+    else:
+        return result * 2
+```
+
+**Note:** In this configuration, Python files are formatted by running **isort first, then Black**. isort organizes the imports, and Black formats everything else. They are designed to be compatible with each other.
+
+### How to Manage Formatters
+
+#### How format-on-save works
+
+When you save a file (`:w`), `conform.nvim` runs automatically:
+
+1. It looks up the filetype of the current buffer (e.g., `javascript`)
+2. It finds the configured formatter(s) for that filetype (e.g., `prettier`)
+3. It runs the formatter on the buffer contents
+4. It replaces the buffer with the formatted output
+5. The file is saved with the formatted content
+
+If no formatter is configured for the filetype, it falls back to the LSP server's built-in formatting (if available), because `lsp_fallback = true`.
+
+#### Adding a new formatter
+
+1. **Install the tool via Mason.** Add it to the `ensure_installed` list in `lua/DuarteRS/plugins/mason.lua`:
+
+```lua
+mason_tool_installer.setup({
+    ensure_installed = {
+        "prettier",
+        "stylua",
+        "isort",
+        "black",
+        "clang-format",  -- <-- add the new formatter here
+    }
+})
+```
+
+2. **Map it to a filetype in conform.** Edit `lua/DuarteRS/plugins/formatting.lua`:
+
+```lua
+conform.setup({
+  formatters_by_ft = {
+    -- ... existing formatters ...
+    c = { "clang-format" },      -- <-- add the filetype mapping
+    cpp = { "clang-format" },
+  },
+})
+```
+
+3. Restart Neovim. The formatter will be installed by Mason and used by conform on save.
+
+#### Removing a formatter
+
+1. Remove the filetype entry from `formatters_by_ft` in `lua/DuarteRS/plugins/formatting.lua`
+2. Optionally remove it from `ensure_installed` in `mason.lua`
+3. Optionally uninstall it via `:Mason` (find it and press `X`)
+
+#### Disabling format-on-save
+
+To disable automatic formatting on save, comment out or remove the `format_on_save` block in `lua/DuarteRS/plugins/formatting.lua`:
+
+```lua
+conform.setup({
+  formatters_by_ft = { ... },
+  -- format_on_save = {          -- comment this out
+  --   lsp_fallback = true,
+  --   async = false,
+  --   timeout_ms = 3000,
+  -- },
+})
+```
+
+You can still format manually at any time with `<leader>mp`.
+
+#### Disabling format-on-save for specific filetypes
+
+If you want format-on-save for most languages but not for a specific one, change `format_on_save` to a function:
+
+```lua
+format_on_save = function(bufnr)
+    local ignore_filetypes = { "markdown", "json" }
+    if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+        return  -- skip formatting for these filetypes
+    end
+    return {
+        lsp_fallback = true,
+        async = false,
+        timeout_ms = 3000,
+    }
+end,
+```
+
+#### Useful formatter commands
+
+| Command        | Description                                                               |
+| -------------- | ------------------------------------------------------------------------- |
+| `<leader>mp`   | Manually format the file or visual selection                              |
+| `:ConformInfo` | Show which formatters are configured and available for the current buffer |
+| `:Mason`       | Open Mason UI to install/update/remove formatters                         |
 
 ---
 
