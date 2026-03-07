@@ -10,6 +10,9 @@ local config = wezterm.config_builder()
 config.font_size = 14
 
 
+-- Set Zellij as default program
+config.default_prog = { 'zellij' }
+
 
 config.enable_tab_bar = false
 
@@ -31,6 +34,12 @@ config.colors = {
 	brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
 }
 
+
+-- Open maximized on startup
+wezterm.on('gui-startup', function(cmd)
+  local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
 
 -- and finally, return the configuration to wezterm
 return config
