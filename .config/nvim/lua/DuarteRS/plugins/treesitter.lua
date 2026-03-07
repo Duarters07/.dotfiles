@@ -70,7 +70,9 @@ ts_configs.setup({
         "vimdoc",
         "query",
         "markdown",
-        "markdown_inline", 
+        "markdown_inline",
+        "terraform",
+        "hcl",
     },
 
     incremental_selection = {

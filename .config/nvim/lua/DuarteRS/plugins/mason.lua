@@ -33,6 +33,7 @@ mason_lspconfig.setup({
         "prismals",
         "pyright",
         "eslint",
+        "terraformls",
     },
     handlers = {
         -- Handler por defeito
@@ -84,5 +85,6 @@ mason_tool_installer.setup({
         "stylua",   -- lua formatter
         "isort",    -- python formatter
         "black",    -- python formatter
+        "tflint",   -- terraform linter
     }
 })

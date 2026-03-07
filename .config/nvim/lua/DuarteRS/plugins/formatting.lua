@@ -16,6 +16,8 @@ conform.setup({
     liquid = { "prettier" },
     lua = { "stylua" },
     python = { "isort", "black" },
+    terraform = { "terraform_fmt" },
+    tf = { "terraform_fmt" },
   },
   format_on_save = {
     lsp_fallback = true,
